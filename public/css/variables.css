@@ -1,0 +1,161 @@
+/* ================================
+   CSS VARIABLES - DESIGN SYSTEM
+   ================================ */
+
+:root {
+  /* === COLORS === */
+  /* Backgrounds */
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --bg-tertiary: #334155;
+  --bg-card: #1e293b;
+  --bg-surface: #0f172a;
+  --bg-overlay: rgba(0, 0, 0, 0.7);
+
+  /* Borders */
+  --border-color: #475569;
+  --border-hover: #64748b;
+  --border-focus: #3b82f6;
+
+  /* Text Colors */
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --text-inverse: #1e293b;
+
+  /* Brand Colors */
+  --accent-color: #3b82f6;
+  --accent-hover: #2563eb;
+  --accent-active: #1d4ed8;
+
+  /* Semantic Colors */
+  --success-color: #10b981;
+  --success-hover: #059669;
+  --success-light: rgba(16, 185, 129, 0.2);
+
+  --warning-color: #f59e0b;
+  --warning-hover: #d97706;
+  --warning-light: rgba(245, 158, 11, 0.2);
+
+  --danger-color: #ef4444;
+  --danger-hover: #dc2626;
+  --danger-light: rgba(239, 68, 68, 0.2);
+
+  --info-color: #06b6d4;
+  --info-hover: #0891b2;
+  --info-light: rgba(6, 182, 212, 0.2);
+
+  /* === SPACING === */
+  --spacing-xs: 0.25rem; /* 4px */
+  --spacing-sm: 0.5rem; /* 8px */
+  --spacing-md: 0.75rem; /* 12px */
+  --spacing-lg: 1rem; /* 16px */
+  --spacing-xl: 1.5rem; /* 24px */
+  --spacing-2xl: 2rem; /* 32px */
+  --spacing-3xl: 3rem; /* 48px */
+
+  /* === TYPOGRAPHY === */
+  --font-family-base: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    sans-serif;
+  --font-family-mono: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono",
+    monospace;
+
+  --font-size-xs: 0.75rem; /* 12px */
+  --font-size-sm: 0.875rem; /* 14px */
+  --font-size-base: 1rem; /* 16px */
+  --font-size-lg: 1.125rem; /* 18px */
+  --font-size-xl: 1.25rem; /* 20px */
+  --font-size-2xl: 1.5rem; /* 24px */
+  --font-size-3xl: 1.875rem; /* 30px */
+  --font-size-4xl: 2.25rem; /* 36px */
+
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+
+  /* === BORDERS === */
+  --border-width: 1px;
+  --border-radius-sm: 6px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 12px;
+  --border-radius-xl: 16px;
+  --border-radius-full: 9999px;
+
+  /* === SHADOWS === */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  --shadow-dark: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+
+  /* === TRANSITIONS === */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.2s ease;
+  --transition-slow: 0.3s ease;
+
+  /* === Z-INDEX === */
+  --z-dropdown: 10;
+  --z-sticky: 20;
+  --z-fixed: 30;
+  --z-modal-backdrop: 40;
+  --z-modal: 50;
+  --z-popover: 60;
+  --z-tooltip: 70;
+  --z-notification: 80;
+
+  /* === LAYOUT === */
+  --sidebar-width: 280px;
+  --sidebar-width-mobile: 100vw;
+  --header-height: 70px;
+  --max-content-width: 1200px;
+
+  /* === SPECIFIC COMPONENTS === */
+  --table-header-bg: var(--bg-tertiary);
+  --table-row-hover: rgba(255, 255, 255, 0.02);
+  --input-bg: var(--bg-primary);
+  --card-bg: var(--bg-card);
+
+  /* === STATUS COLORS === */
+  --status-offen-bg: var(--warning-light);
+  --status-offen-text: var(--warning-color);
+
+  --status-bearbeitung-bg: var(--info-light);
+  --status-bearbeitung-text: var(--info-color);
+
+  --status-abgeschlossen-bg: var(--success-light);
+  --status-abgeschlossen-text: var(--success-color);
+
+  --status-ueberfaellig-bg: var(--danger-light);
+  --status-ueberfaellig-text: var(--danger-color);
+}
+
+/* === RESPONSIVE BREAKPOINTS === */
+:root {
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+}
+
+/* === DARK MODE VARIATIONS === */
+@media (prefers-color-scheme: light) {
+  /* Hier könnten Light Mode Varianten definiert werden */
+}
+
+/* === PRINT STYLES === */
+@media print {
+  :root {
+    --bg-primary: white;
+    --bg-secondary: white;
+    --bg-card: white;
+    --text-primary: black;
+    --text-secondary: #333;
+    --border-color: #ccc;
+  }
+}

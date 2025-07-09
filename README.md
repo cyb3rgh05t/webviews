@@ -1,231 +1,317 @@
-# FAF Lackiererei - Rechnungs- und Auftragssystem
+# 🎨 Lackiererei Management System
 
-Ein modernes, webbasiertes System zur Verwaltung von Aufträgen und Rechnungen für Lackierereien, basierend auf der ursprünglichen Excel-Vorlage.
+Ein modernes, webbasiertes Verwaltungssystem für Lackierereien mit eleganter Dark Mode Oberfläche. Basierend auf Ihrem VBA-Code, aber als vollständige Web-Anwendung mit **modularer Architektur** implementiert.
 
-## 🌟 Features
+## 🏗️ Projektstruktur
 
-### 📋 Auftragsverwaltung
+```
+lackiererei-system/
+│
+├── 📁 config/                 # Konfigurationsdateien
+│   └── database.js           # Datenbankinitialisierung
+│
+├── 📁 routes/                 # API-Routen (modular)
+│   ├── kunden.js             # Kunden-Endpoints
+│   ├── auftraege.js          # Auftrags-Endpoints
+│   ├── rechnungen.js         # Rechnungs-Endpoints
+│   ├── dashboard.js          # Dashboard-Endpoints
+│   └── settings.js           # Einstellungs-Endpoints
+│
+├── 📁 models/                 # Datenbankmodelle
+│   ├── kunden.js             # Kunden-Datenbanklogik
+│   ├── auftraege.js          # Auftrags-Datenbanklogik
+│   ├── rechnungen.js         # Rechnungs-Datenbanklogik
+│   └── arbeitsschritte.js    # Arbeitsschritt-Datenbanklogik
+│
+├── 📁 utils/                  # Hilfsfunktionen
+│   ├── numbers.js            # Nummernverwaltung (wie VBA)
+│   ├── validation.js         # Validierungsfunktionen
+│   ├── templates.js          # Schnell-Zeiten Templates
+│   └── helpers.js            # Allgemeine Hilfsfunktionen
+│
+├── 📁 public/                 # Frontend-Dateien
+│   ├── index.html            # Haupt-HTML-Datei
+│   │
+│   ├── 📁 css/               # Stylesheets (modular)
+│   │   ├── variables.css     # CSS-Variablen & Design System
+│   │   ├── base.css          # Grundstyles
+│   │   ├── components.css    # UI-Komponenten
+│   │   ├── layout.css        # Layout & Grid
+│   │   └── responsive.css    # Mobile/Responsive
+│   │
+│   └── 📁 js/                # JavaScript (modular)
+│       ├── app.js            # Haupt-App-Logik
+│       ├── config.js         # Frontend-Konfiguration
+│       │
+│       ├── 📁 utils/         # Frontend-Utilities
+│       │   ├── api.js        # API-Client
+│       │   ├── helpers.js    # Hilfsfunktionen
+│       │   └── validation.js # Frontend-Validierung
+│       │
+│       ├── 📁 components/    # UI-Komponenten
+│       │   ├── navigation.js # Navigation
+│       │   ├── modal.js      # Modal-System
+│       │   ├── table.js      # Tabellen-Komponente
+│       │   └── notification.js # Benachrichtigungen
+│       │
+│       └── 📁 pages/         # Seiten-Logik
+│           ├── dashboard.js  # Dashboard
+│           ├── kunden.js     # Kunden-Verwaltung
+│           ├── auftraege.js  # Auftrags-Verwaltung
+│           ├── rechnungen.js # Rechnungs-Verwaltung
+│           └── einstellungen.js # Einstellungen
+│
+├── 📁 scripts/               # Utility-Scripts
+│   ├── setup.js             # Ersteinrichtung
+│   ├── backup.js            # Backup-Erstellung
+│   ├── migrate.js           # Datenbank-Migration
+│   └── seed.js              # Testdaten
+│
+├── 📁 tests/                 # Tests
+│   ├── unit/                # Unit-Tests
+│   └── integration/         # Integrationstests
+│
+├── server.js                # Haupt-Server
+├── package.json             # Node.js-Abhängigkeiten
+├── .env.example             # Umgebungsvariablen-Vorlage
+└── README.md               # Diese Anleitung
+```
 
-- **Automatische Nummerierung** - Fortlaufende Auftragsnummern (A000001, A000002, ...)
-- **Kundendatenverwaltung** - Vollständige Kundenstammdaten
-- **Fahrzeugverwaltung** - Kennzeichen, Marke, Modell, VIN, Farben
-- **Arbeitszeiten-Tracking** - Detaillierte Erfassung aller Arbeitsschritte
-- **Automatische Berechnungen** - Kosten basierend auf Stundenpreis und Zeit
-- **MwSt-Berechnung** - Automatische 19% MwSt-Berechnung
+## ✨ Features (wie im VBA-Code)
 
-### 🧾 Rechnungserstellung
+### 🔧 Auftragsmanagement
 
-- **Automatische Nummerierung** - Fortlaufende Rechnungsnummern (R000001, R000002, ...)
-- **Komplexe Preisberechnung** - Arbeitszeiten und Materialien getrennt
-- **Flexibles MwSt-System** - 19% und 7% MwSt-Sätze
-- **Rabatt-System** - Prozentuale Rabatte mit automatischer Neuberechnung
-- **Deutsche Normen** - Entspricht deutschen Rechnungsstandards
+- **Neuer Auftrag erstellen** - `NeuerAuftrag()` → Modular in `/routes/auftraege.js`
+- **Automatische REP-Nummer** - `NaechsteNummer()` → `/utils/numbers.js`
+- **Standard-Arbeitsschritte** - `StandardArbeitsschritte()` → Templates
+- **Schnell-Zeiten** - `SchnellZeitenAuftrag()` → 5 Templates verfügbar
+- **Kundendaten-Management** - `KundendatenAendern()` → Vollständig portiert
 
-### 🎨 Moderne Benutzeroberfläche
+### 💰 Rechnungsmanagement
 
-- **Dark Mode Design** - Augenschonende dunkle Oberfläche
-- **Responsive Layout** - Funktioniert auf Desktop, Tablet und Mobile
-- **Intuitive Navigation** - Einfache Bedienung ohne Schulung
-- **Dashboard** - Übersicht über aktuelle Aufträge und Kennzahlen
+- **Auftrag zu Rechnung** - `AuftragZurRechnung()` → API-Endpoint
+- **Rabatt-System** - `Rabatt5/10/15Prozent()` → Frontend-Buttons
+- **Automatische Berechnung** - MwSt, Netto, Brutto
+- **Rechnungsnummern** - `R/2025-001` Format beibehalten
 
-### 🔧 Technische Features
+### 👥 Kundenverwaltung
 
-- **SQLite Datenbank** - Keine komplexe Datenbankinstallation nötig
-- **Automatische Backups** - Datensicherung
-- **Erweiterbar** - Modularer Aufbau für neue Features
-- **Sicherheit** - Moderne Sicherheitsstandards
+- **Intelligente Nummern** - `K-001` Format wie im VBA
+- **Adressverwaltung** - `KundenadresseAendern()` → Modular
+- **Platzhalter-Prüfung** - `KundendatenValidierung()` → Vollständig
 
-## 🚀 Installation
+## 🚀 Installation & Setup
 
-### Voraussetzungen
+### 1. **Projekt klonen/erstellen**
 
-- **Node.js** (Version 16 oder höher)
-- **npm** (normalerweise mit Node.js installiert)
+```bash
+mkdir lackiererei-system
+cd lackiererei-system
+```
 
-### 1. Repository klonen oder Dateien herunterladen
+### 2. **Dateien erstellen**
 
-\`\`\`bash
+Erstellen Sie die Projektstruktur und kopieren Sie die Artifacts:
 
-# Falls Git verfügbar:
+- `server.js` (Haupt-Server)
+- `package.json` (Abhängigkeiten)
+- Alle Dateien aus den Artifacts in entsprechende Ordner
 
-git clone <repository-url>
-cd faf-lackiererei-system
+### 3. **Abhängigkeiten installieren**
 
-# Oder: Dateien in einen neuen Ordner entpacken
-
-\`\`\`
-
-### 2. Abhängigkeiten installieren
-
-\`\`\`bash
+```bash
 npm install
-\`\`\`
+```
 
-### 3. Datenbank initialisieren
+### 4. **Entwicklungsumgebung** (optional)
 
-\`\`\`bash
-npm run init-db
-\`\`\`
-Dieser Befehl:
+```bash
+npm install --save-dev
+```
 
-- ✅ Erstellt die SQLite-Datenbank
-- ✅ Legt alle nötigen Tabellen an
-- ✅ Fügt Standardeinstellungen hinzu
-- ✅ Erstellt Demo-Daten zum Testen
+### 5. **Starten**
 
-### 4. Server starten
-
-\`\`\`bash
+```bash
+# Produktionsmodus
 npm start
-\`\`\`
 
-### 5. Browser öffnen
-
-Öffnen Sie [http://localhost:3000](http://localhost:3000) in Ihrem Browser.
-
-## 📁 Projektstruktur
-
-\`\`\`
-faf-lackiererei-system/
-├── 📄 package.json # Projektabhängigkeiten
-├── 🖥️ server.js # Express.js Server
-├── 📋 README.md # Diese Datei
-├── 📁 public/ # Frontend-Dateien
-│ ├── 🌐 index.html # Haupt-HTML-Datei
-│ └── ⚡ app.js # Frontend-JavaScript
-├── 📁 scripts/ # Hilfsskripte
-│ └── 🔧 init-db.js # Datenbank-Initialisierung
-└── 📁 data/ # Datenbank (wird automatisch erstellt)
-└── 💾 lackiererei.db # SQLite-Datenbank
-\`\`\`
-
-## 🎯 Verwendung
-
-### Dashboard
-
-Das Dashboard zeigt Ihnen:
-
-- 📊 Anzahl offener Aufträge
-- 💰 Anzahl offener Rechnungen
-- 👥 Gesamtzahl Kunden
-- 📈 Monatsumsatz
-- 📋 Liste der neuesten Aufträge
-
-### Neuen Auftrag erstellen
-
-1. **Kunden auswählen** - Aus vorhandenen Kunden wählen
-2. **Fahrzeug zuordnen** - Automatische Filterung nach Kunde
-3. **Arbeitszeiten erfassen** - Alle Arbeitsschritte mit Zeit und Preis
-4. **Automatische Berechnung** - Gesamtkosten und MwSt werden berechnet
-5. **Speichern** - Auftrag erhält automatisch eine Nummer
-
-### Rechnung erstellen
-
-1. **Kunde und Fahrzeug** wählen
-2. **Positionen erfassen**:
-   - **Arbeitszeiten** (meist 19% MwSt)
-   - **Materialien** (19% oder 7% MwSt)
-   - **Zusatzpositionen** (flexibel)
-3. **Rabatt** optional hinzufügen
-4. **Automatische Berechnung** aller Beträge
-5. **Speichern** - Rechnung erhält automatisch eine Nummer
-
-### Kunden- und Fahrzeugverwaltung
-
-- **Kunden anlegen** mit vollständigen Kontaktdaten
-- **Fahrzeuge zuordnen** mit Kennzeichen, Marke, Modell, VIN
-- **Farbcodes** für spätere Referenz speichern
-
-## ⚙️ Einstellungen
-
-Im Einstellungsbereich können Sie anpassen:
-
-- **Basis-Stundenpreis** (Standard: 110€)
-- **MwSt-Sätze** (Standard: 19% und 7%)
-- **Firmendaten** (Name, Adresse, Kontakt)
-- **Zahlungsbedingungen** (Standardtext für Rechnungen)
-- **Gewährleistung** (Standardtext für Rechnungen)
-
-## 🔧 Entwicklung
-
-### Entwicklungsserver starten
-
-\`\`\`bash
+# Entwicklungsmodus (Auto-Reload)
 npm run dev
-\`\`\`
-Startet den Server mit automatischem Neustart bei Änderungen.
+```
 
-### Datenbank zurücksetzen
+**Öffnen:** `http://localhost:3000`
 
-\`\`\`bash
-npm run init-db
-\`\`\`
-⚠️ **Achtung**: Löscht alle vorhandenen Daten!
+## 🎯 Entwicklung & Erweiterung
 
-## 🗂️ Datenbank-Schema
+### Neue Route hinzufügen
 
-### Haupttabellen
+```javascript
+// 1. Route erstellen: routes/meine-route.js
+const express = require("express");
+const router = express.Router();
 
-- **kunden** - Kundenstammdaten
-- **fahrzeuge** - Fahrzeugdaten (mit Kunde verknüpft)
-- **auftraege** - Auftragskopfdaten
-- **auftrag_positionen** - Einzelne Arbeitspositionen
-- **rechnungen** - Rechnungskopfdaten
-- **rechnung_positionen** - Rechnungspositionen
-- **einstellungen** - Systemkonfiguration
+router.get("/", (req, res) => {
+  res.json({ message: "Meine Route" });
+});
 
-### Beziehungen
+module.exports = router;
 
-- Ein Kunde kann mehrere Fahrzeuge haben
-- Ein Fahrzeug kann mehrere Aufträge haben
-- Ein Auftrag kann eine Rechnung haben
-- Aufträge und Rechnungen haben mehrere Positionen
+// 2. In server.js registrieren
+app.use("/api/meine-route", require("./routes/meine-route"));
+```
 
-## 🔒 Sicherheit
+### Neues Model erstellen
 
-- **Helmet.js** - HTTP-Security-Headers
-- **Rate Limiting** - Schutz vor Überlastung
-- **Input Validation** - Validierung aller Eingaben
-- **SQL Injection Protection** - Prepared Statements
-- **CORS** konfiguriert
+```javascript
+// models/mein-model.js
+const { db } = require("../config/database");
 
-## 🚀 Erweiterungen
+class MeinModel {
+  static async getAll() {
+    return new Promise((resolve, reject) => {
+      db.all("SELECT * FROM meine_tabelle", (err, rows) => {
+        if (err) reject(err);
+        else resolve(rows);
+      });
+    });
+  }
+}
 
-Das System ist modular aufgebaut und kann einfach erweitert werden:
+module.exports = MeinModel;
+```
 
-### Geplante Features
+### Neue Frontend-Seite
 
-- 📧 **E-Mail-Versand** von Rechnungen
-- 📄 **PDF-Export** für Rechnungen und Aufträge
-- 📊 **Erweiterte Berichte** und Statistiken
-- 🔍 **Volltextsuche** in allen Bereichen
-- 📱 **Mobile App** (Progressive Web App)
-- 🔄 **API-Schnittstellen** für Buchhaltungssoftware
-- 📦 **Materialverwaltung** und Lagerbestand
-- 📅 **Terminplanung** und Kalender
-- 💼 **Multi-Mandanten-Fähigkeit**
+```javascript
+// public/js/pages/meine-seite.js
+class MeineSeitePage {
+  constructor(data) {
+    this.data = data;
+  }
 
-### Eigene Erweiterungen
+  async render(params = {}) {
+    const content = document.getElementById("app-content");
+    content.innerHTML = `<h2>Meine Seite</h2>`;
+  }
+}
+```
 
-1. **API nutzen** - Alle Funktionen über REST-API verfügbar
-2. **Frontend anpassen** - HTML/CSS/JavaScript in \`public/\`
-3. **Server erweitern** - Neue Routen in \`server.js\`
-4. **Datenbank** - Neue Tabellen via Migrations
+## 🛠️ API-Endpoints
 
-## 📞 Support
+### Kunden
 
-Bei Fragen oder Problemen:
+- `GET /api/kunden` - Alle Kunden
+- `POST /api/kunden` - Neuer Kunde
+- `PUT /api/kunden/:id` - Kunde bearbeiten
+- `DELETE /api/kunden/:id` - Kunde löschen
 
-1. **Dokumentation** prüfen
-2. **Logs** kontrollieren (Konsole beim Serverstart)
-3. **Browser-Konsole** auf Fehler prüfen
-4. **Datenbank** mit SQLite-Tool inspizieren
+### Aufträge
 
-## 📝 Lizenz
+- `GET /api/auftraege` - Alle Aufträge
+- `POST /api/auftraege` - Neuer Auftrag
+- `GET /api/auftraege/:id` - Auftrag-Details
+- `POST /api/auftraege/:id/zu-rechnung` - Zu Rechnung konvertieren
+- `POST /api/auftraege/:id/schnell-zeiten` - Template anwenden
 
-Dieses Projekt wurde für FAF Lackiererei entwickelt.
-Alle Rechte vorbehalten.
+### Rechnungen
 
----
+- `GET /api/rechnungen` - Alle Rechnungen
+- `PUT /api/rechnungen/:id/rabatt` - Rabatt anwenden
+- `PUT /api/rechnungen/:id/bezahlt` - Als bezahlt markieren
 
-**Viel Erfolg mit Ihrem neuen Rechnungssystem! 🎨🚗**
+## 🔧 Konfiguration
+
+### Umgebungsvariablen (.env)
+
+```bash
+# Server
+PORT=3000
+NODE_ENV=development
+
+# Database
+DB_PATH=./lackiererei.db
+
+# App Settings
+APP_NAME="Lackiererei Pro"
+DEFAULT_STUNDENPREIS=65.0
+```
+
+### Settings anpassen
+
+```javascript
+// Via API
+PUT /api/settings
+{
+    "basis_stundenpreis": "75.0",
+    "firma_name": "Meine Lackiererei"
+}
+```
+
+## 🧪 Tests ausführen
+
+```bash
+# Alle Tests
+npm test
+
+# Nur Unit-Tests
+npm run test:unit
+
+# Nur Integration-Tests
+npm run test:integration
+```
+
+## 📦 Backup & Restore
+
+```bash
+# Backup erstellen
+npm run backup
+
+# Testdaten einfügen
+npm run seed
+```
+
+## 🌟 Vorteile der modularen Struktur
+
+### ✅ **Wartbarkeit**
+
+- **Kleine Dateien** - Jede Datei hat einen klaren Zweck
+- **Logische Trennung** - Frontend/Backend/Utils getrennt
+- **Einfache Navigation** - Schnell die richtige Datei finden
+
+### ✅ **Erweiterbarkeit**
+
+- **Neue Features** - Einfach neue Module hinzufügen
+- **Team-Entwicklung** - Mehrere Entwickler können parallel arbeiten
+- **Plugin-System** - Erweiterungen ohne Core-Änderungen
+
+### ✅ **Performance**
+
+- **Lazy Loading** - Nur benötigte Module laden
+- **Caching** - Bessere Browser-Cache-Nutzung
+- **Minifizierung** - Einzelne Dateien optimierbar
+
+### ✅ **Testing**
+
+- **Unit-Tests** - Jedes Modul einzeln testbar
+- **Mocking** - Abhängigkeiten einfach mocken
+- **Coverage** - Bessere Test-Abdeckung
+
+## 🔄 Migration vom VBA-Code
+
+| **VBA-Funktion**           | **Neue Struktur**                      | **Datei**             |
+| -------------------------- | -------------------------------------- | --------------------- |
+| `NeuerAuftrag()`           | POST /api/auftraege                    | `routes/auftraege.js` |
+| `NaechsteNummer()`         | `generateNextNumber()`                 | `utils/numbers.js`    |
+| `KundendatenAendern()`     | PUT /api/kunden/:id                    | `routes/kunden.js`    |
+| `AuftragZurRechnung()`     | POST /api/auftraege/:id/zu-rechnung    | `routes/auftraege.js` |
+| `SchnellZeitenAuftrag()`   | POST /api/auftraege/:id/schnell-zeiten | `utils/templates.js`  |
+| `KundendatenValidierung()` | `validateKunde()`                      | `utils/validation.js` |
+
+## 📈 Nächste Schritte
+
+1. **Setup ausführen** - `npm install && npm start`
+2. **Erste Daten eingeben** - Kunden und Aufträge erstellen
+3. **Anpassungen vornehmen** - Firmen-Settings konfigurieren
+4. **Features erweitern** - Neue Module nach Bedarf hinzufügen
+
+**Die modulare Struktur macht Ihr System zukunftssicher und professionell! 🚀**
