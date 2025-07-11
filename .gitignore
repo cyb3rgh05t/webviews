@@ -1,2 +1,3 @@
 /api/cache
 /databases
+*.log
