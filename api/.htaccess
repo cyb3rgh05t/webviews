@@ -1,0 +1,18 @@
+# Enable the rewriting engine
+RewriteEngine on
+
+# If the requested file does not exist
+RewriteCond %{REQUEST_FILENAME} !-f
+
+# If the requested directory does not exist
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Restrict access to the file "hax.db"
+<Files "hax.db">
+    Order Allow,Deny
+    Deny from all
+</Files>
+<Files "backdrop.db">
+    Order Allow,Deny
+    Deny from all
+</Files>

@@ -1,0 +1,600 @@
+:root {
+  /* Define simple colors */
+  --main-bg-color: #000000;
+  --modal-bg-color: #2d2d2d;
+
+  /* Complex gradients */
+  --main-bg-gradient: radial-gradient(
+    circle,
+    #3a3a3a,
+    #2d2d2d,
+    #202020,
+    #141414,
+    #000000
+  );
+  --modal-bg-gradient: linear-gradient(
+    135deg,
+    #3a3a3a,
+    #2d2d2d,
+    #202020,
+    #141414,
+    #000000
+  );
+  --modal-header-color: linear-gradient(
+      135deg,
+      #3a3a3a,
+      #2d2d2d,
+      #202020,
+      #141414,
+      #000000
+    )
+    center center/cover no-repeat fixed;
+  --modal-footer-color: linear-gradient(
+      135deg,
+      #3a3a3a,
+      #2d2d2d,
+      #202020,
+      #141414,
+      #000000
+    )
+    center center/cover no-repeat fixed;
+
+  --drop-down-menu-bg: #2d2d2d;
+
+  --button-color: #7a7a7a;
+  --button-color-hover: #9b9b9b;
+  --button-text: #eee;
+  --button-text-hover: #fff;
+
+  --accent-color: 170, 170, 170;
+  --accent-color-hover: rgba(255, 255, 255, 0.45);
+  --link-color: #7a7a7a;
+  --link-color-hover: #fff;
+  --label-text-color: black;
+
+  --text: #ddd;
+  --text-hover: #fff;
+  --text-muted: #999;
+
+  /*Specials*/
+  --arr-queue-color: #6b5; /* Servarr apps + Bazarr*/
+  --plex-poster-unwatched: #e5a00d;
+  --petio-spinner: invert(35%) sepia(12%) saturate(4%) hue-rotate(2deg)
+    brightness(104%) contrast(86%); /* Made with https://codepen.io/jsm91/embed/ZEEawyZ */
+  --gitea-color-primary-dark-4: 255, 255, 255;
+  --overseerr-gradient: radial-gradient(
+      circle,
+      rgba(58, 58, 58, 0.95),
+      rgba(45, 45, 45, 0.95),
+      rgba(32, 32, 32, 0.95),
+      rgba(20, 20, 20, 0.95),
+      rgb(0, 0, 0, 0.95)
+    )
+    center center/cover no-repeat fixed;
+}
+
+html,
+body {
+  background: var(--modal-bg-gradient) center center/cover no-repeat fixed;
+  color: #fff;
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.bg-dark {
+  background: var(--main-bg-gradient) center center/cover no-repeat fixed;
+}
+
+.bg-form-dark {
+  background: var(--main-bg-gradient) center center/cover no-repeat fixed !important;
+}
+
+.bg-modal-dark {
+  background: var(--modal-bg-gradient)  center center/cover no-repeat fixed !important;
+}
+
+.text-white {
+  color: var(--text) !important;
+}
+
+/* Main content container to fill remaining space */
+.content {
+  margin-left: 250px; /* Adjust for sidebar width */
+  padding: 20px;
+  margin-bottom: 60px; /* Space for footer, so content doesn’t hide under it */
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  height: calc(100vh - 56px - 60px); /* Subtract navbar and footer height */
+  box-sizing: border-box;
+  justify-content: center;
+   -ms-overflow-style: none; /* Hide scrollbar in Internet Explorer */
+  scrollbar-width: none; /* Hide scrollbar in Firefox */
+}
+
+/* Hide scrollbar visually but keep it functional for scrolling */
+.content::-webkit-scrollbar {
+  display: none; /* Hide scrollbar in WebKit browsers */
+}
+
+.content.collapsed {
+  margin-left: 60px;
+}
+
+/* Footer styles */
+.footer {
+  background: var(--main-bg-gradient) center center/cover no-repeat fixed;
+  color: #ffc107;
+  position: fixed;
+  bottom: 0;
+  height: 60px; /* Fixed height for footer */
+  width: calc(100% - 250px); /* Width minus sidebar */
+  left: 250px; /* Offset for sidebar */
+  padding: 20px;
+  text-align: center;
+  z-index: 1000;
+}
+
+.footer-login {
+  color: #ffc107;
+  position: fixed;
+  bottom: 0;
+  height: 60px; /* Fixed height for footer */
+  width: 100%; /* Full width */
+  padding: 20px;
+  z-index: 1000;
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  text-align: center; /* Center text within the element */
+}
+
+
+
+.footer.collapsed {
+  width: calc(100% - 60px);
+  left: 60px;
+}
+
+/* Divider */
+.v-divider {
+    position: fixed;
+    top: 0;
+    left: 250px; /* Match sidebar width */
+    height: 100vh;
+    width: 2px; /* Divider width */
+    background-color: #dadada; /* Divider color */
+    z-index: 1001; /* Above sidebar */
+}
+
+/* Horizontal Divider*/
+.h-divider {
+  width: 80%; /* Width of the divider */
+  height: 1px; /* Height of the divider line */
+  background-color: #dadada; /* Color of the divider */
+  margin: 15px auto; /* Center and add vertical spacing */
+}
+
+.title-divider {
+  width: 100%; /* Width of the divider */
+  height: 1px; /* Height of the divider line */
+  background-color: #e5a209; /* Color of the divider */
+  margin-top: 10px; /* Center and add vertical spacing */
+}
+
+
+
+#sidebar {
+  background: var(--main-bg-gradient) center center/cover no-repeat fixed;
+  width: 250px;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  transition: width 0.3s;
+  z-index: 1000;
+  border-right: 1px solid #dadada;
+  padding: 10px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center logo and arrow */
+}
+
+#sidebar .nav-link {
+  color: #fff;
+  padding: 0.75rem 1rem;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+/* Collapsed Sidebar */
+#sidebar.collapsed {
+  width: 60px;
+}
+
+#sidebar.collapsed .nav-link {
+  justify-content: center;
+  padding: 0.75rem 0;
+}
+
+#sidebar.collapsed .nav-link span,
+#sidebar.collapsed h4 {
+  display: none;
+}
+
+#sidebar.collapsed .nav-link i {
+  margin-right: 0;
+  text-align: center;
+}
+
+/* Active link styling */
+#sidebar .nav-link.active {
+  color: #ffa500 !important;
+}
+
+#sidebar .nav-link.active i,
+#sidebar .nav-link.active span {
+  color: #ffa500 !important;
+}
+
+/* Hover state */
+#sidebar .nav-link:hover {
+  color: #ffa500;
+  transform: scale(1.05);
+}
+
+#sidebar .nav-link:hover i,
+#sidebar .nav-link:hover span {
+  color: #ffa500;
+}
+
+/* Logo */
+#logo-expanded {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+#logo-collapsed {
+  display: none; /* Hidden by default */
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+/* Toggle logo visibility based on sidebar state */
+#sidebar.collapsed #logo-expanded {
+  display: none;
+}
+
+#sidebar.collapsed #logo-collapsed {
+  display: flex; /* Show collapsed logo */
+}
+
+/* Toggle Button */
+.toggle-btn {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+#toggle-arrow {
+  cursor: pointer;
+  font-size: 20px;
+  transition: transform 0.3s ease;
+}
+
+/* Rotate arrow when sidebar is collapsed */
+#sidebar.collapsed #toggle-arrow {
+  transform: rotate(180deg);
+}
+
+#navbar-content {
+  position: fixed;
+  top: 0;
+  left: 250px;
+  width: calc(100% - 250px);
+  z-index: 1001;
+  transition: left 0.3s, width 0.3s;
+}
+
+#navbar-content.collapsed {
+  left: 60px;
+  width: calc(100% - 60px);
+}
+ 
+.navbar {
+    background: var(--main-bg-gradient) center center/cover no-repeat fixed;
+}
+#main-content {
+    margin-top: 56px; /* Adjust for navbar height */
+    margin-left: 250px; /* Align with sidebar width */
+    padding: 20px 30px;
+    max-width: calc(100vw - 250px);
+    overflow-x: hidden;
+    overflow-y: auto; /* Ensure vertical scrolling */
+    transition: margin-left 0.3s;
+}
+
+#main-content.collapsed {
+  margin-left: 60px;
+  max-width: calc(100vw - 60px); /* Adjust for collapsed sidebar */
+}
+
+#main-content > div {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Media query for small devices */
+@media (max-width: 768px) {
+  .footer {
+    width: 100%;
+    left: 0;
+  }
+}
+
+/* Hide text in the sidebar when collapsed */
+#sidebar.collapsed .nav-link span,
+#sidebar.collapsed h4 {
+  display: none;
+}
+
+.nav-link i {
+  margin-right: 10px;
+}
+
+/* Style for the main container to take up full height and allow scrolling */
+.full-height-container {
+  height: 100vh; /* Full viewport height */
+  display: flex;
+  flex-direction: column;
+}
+
+/* The main content area grows to fill available space */
+.scrollable-content {
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+/* Style for the saved selections area */
+.saved-selections {
+  max-height: 50vh; /* Set the max height for the saved selections to be half the viewport */
+  overflow-y: auto; /* Enable scrolling */
+}
+
+.card-header {
+  background-color: transparent;
+  color: #ffffff;
+  border: none;
+}
+
+.card-body {
+  border: none;
+  border-radius: 20px;
+}
+
+.card-backdrop {
+  background-color: #2d2424;
+  border-color: orange;
+  border: 1px solid orange;
+}
+
+.card {
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: none;
+    border-radius: .25rem;
+}
+/* Disable hover effect on buttons with the .no-hover class */
+.no-hover {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+/* Apply orange border globally to all input and select elements when focused */
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #ffa500 !important; /* Ensure orange border */
+  box-shadow: 0 0 5px #ffa500 !important; /* Optional orange glow */
+  outline: none !important; /* Remove default blue outline */
+}
+
+.form-control {
+  display: block;
+  width: 100%;
+  height: calc(1.5em + 0.75rem + 2px);
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--text) !important;
+  background-color: var(--main-bg-gradient) center center/cover no-repeat fixed !important;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.select2-container--bootstrap4 .select2-selection--single {
+  background-color: var(--main-bg-gradient) center center/cover no-repeat fixed !important; /* Dark background for Bootstrap dark theme */
+  color: var(--text) !important;
+  line-height: 1.5;
+  height: calc(1.5em + 0.75rem + 2px);
+  padding: 0.375rem;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.select2-container--bootstrap4 .select2-selection__placeholder {
+  color: var(--text) !important;
+}
+
+.select2-container--bootstrap4 .select2-dropdown {
+  background-color: var(
+    --modal-bg-color
+  ) !important; /* Dark background for dropdown */
+  color: var(--text) !important; /* White text color */
+  border: 1px solid #ced4da;
+  max-height: 200px; /* Adjust the height as needed */
+  overflow-y: auto; /* Enable vertical scrolling */
+  border-radius: 0.25rem;
+  border-color: #ffa500 !important;
+  box-shadow: 0 0 5px #ffa500 !important; /* Optional orange glow */
+  outline: none !important;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out; /* Border color to match Bootstrap */
+}
+
+/* Hide scrollbar for WebKit browsers */
+.select2-container--bootstrap4 .select2-dropdown::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for Chrome, Safari, and Edge */
+}
+
+/* Hide scrollbar for Firefox */
+.select2-container--bootstrap4 .select2-dropdown {
+  scrollbar-width: none; /* Hide scrollbar for Firefox */
+  -ms-overflow-style: none; /* Hide scrollbar for IE and Edge */
+}
+
+/* Highlighted option on hover */
+.select2-container--bootstrap4 .select2-results__option--highlighted {
+  background-color: #ffa500; /* Darker background on hover */
+  color: var(--text) !important;
+}
+
+/* Style the selected option text */
+.select2-container--bootstrap4 .select2-selection__rendered {
+  color: var(--text) !important; /* White text for selected item */
+}
+
+/* Style the search input container */
+.select2-container--bootstrap4 .select2-search--dropdown {
+  padding: 8px; /* Add padding around the search box */
+  background-color: var(--main-bg-gradient) center center/cover no-repeat fixed !important; /* Match dropdown background */
+}
+
+/* Style the search input field */
+.select2-container--bootstrap4 .select2-search__field {
+  background-color: var(--main-bg-gradient) center center/cover no-repeat fixed !important; /* Darker background for search input */
+  color: #ffffff; /* White text */
+  border: 1px solid #6c757d; /* Border color */
+  border-radius: 4px; /* Rounded corners */
+  padding: 6px 12px; /* Inner padding */
+}
+
+/* Style the search input placeholder */
+.select2-container--bootstrap4 .select2-search__field::placeholder {
+  color: #adb5bd; /* Lighter grey placeholder */
+}
+
+/* Adjust input focus effect */
+.select2-container--bootstrap4 .select2-search__field:focus {
+  border-color: #007bff !important; /* Highlight border on focus (e.g., Bootstrap warning color) */
+  outline: none; /* Remove default outline */
+}
+
+/* Style the Select2 dropdown when it is active (open) */
+.select2-container--bootstrap4.select2-container--open
+  .select2-selection--single {
+  border-color: #ffa500 !important; /* Ensure orange border */
+  box-shadow: 0 0 5px #ffa500 !important; /* Optional orange glow */
+  outline: none !important; /* Optional: adjust background */
+}
+
+.error-notification {
+  color: #ff0000;
+  background-color: #ffe5e5;
+  padding: 10px;
+  border: 1px solid #ff0000;
+  border-radius: 5px;
+  text-align: center;
+}
+
+/* Notification Styles */
+.notification-login {
+  color: #ffffff; /* White text */
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+  margin-top: 15px;
+  display: block; /* Set display to block */
+  max-width: 400px;
+  margin: 20px auto; /* Center the notification */
+  position: relative;
+  z-index: 1000; /* Ensure it’s on top */
+}
+
+/* Notification Styles */
+.notification {
+  color: #ffffff; /* White text */
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+  margin-bottom: 15px;
+  display: block; /* Set display to block */
+  position: relative;
+  z-index: 1000; /* Ensure it’s on top */
+}
+
+.notification-success {
+  background-color: #28a745; /* Green for success */
+}
+
+.notification-error {
+  background-color: #dc3545; /* Red for error */
+}
+
+.notification-warning {
+  background-color: #ffc107; /* Yellow for warning */
+  color: #343a40; /* Darker text color for contrast */
+}
+
+/* New Danger Notification Style */
+.notification-danger {
+  background-color: #c82333; /* Slightly darker red for danger */
+}
+
+/* Toast notification style */
+.toast-notification {
+  position: relative;
+  background-color: #28a745;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-size: 16px;
+  display: inline-block;
+  margin-top: 10px;
+  text-align: center;
+  width: 400
+}
+
+#progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 5px;
+  background-color: #e5a209;
+  z-index: 9999;
+  transition: width 0.3s ease;
+}
+
+button:focus,
+button:active {
+  outline: none;
+  box-shadow: none;
+}

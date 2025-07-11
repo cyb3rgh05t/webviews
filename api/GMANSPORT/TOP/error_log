@@ -1,0 +1,62 @@
+[23-Aug-2024 08:17:56 Europe/London] PHP Warning:  file_get_contents(): Filename cannot be empty in /home/gmanmods/public_html/GMANSPORT/TOP/fighting.php on line 3
+[23-Aug-2024 08:17:56 Europe/London] PHP Warning:  DOMDocument::loadHTML(): Empty string supplied as input in /home/gmanmods/public_html/GMANSPORT/TOP/fighting.php on line 17
+[23-Aug-2024 08:17:56 Europe/London] PHP Warning:  file_get_contents(): Filename cannot be empty in /home/gmanmods/public_html/GMANSPORT/TOP/fighting.php on line 3
+[23-Aug-2024 08:17:56 Europe/London] PHP Warning:  DOMDocument::loadHTML(): Empty string supplied as input in /home/gmanmods/public_html/GMANSPORT/TOP/fighting.php on line 17
+[23-Aug-2024 08:17:56 Europe/London] PHP Warning:  file_get_contents(): Filename cannot be empty in /home/gmanmods/public_html/GMANSPORT/TOP/fighting.php on line 3
+[23-Aug-2024 08:17:56 Europe/London] PHP Warning:  DOMDocument::loadHTML(): Empty string supplied as input in /home/gmanmods/public_html/GMANSPORT/TOP/fighting.php on line 17
+[23-Aug-2024 08:17:56 Europe/London] PHP Warning:  file_get_contents(): Filename cannot be empty in /home/gmanmods/public_html/GMANSPORT/TOP/fighting.php on line 3
+[23-Aug-2024 08:17:56 Europe/London] PHP Warning:  DOMDocument::loadHTML(): Empty string supplied as input in /home/gmanmods/public_html/GMANSPORT/TOP/fighting.php on line 17
+[23-Aug-2024 08:18:08 Europe/London] PHP Warning:  file_get_contents(): Filename cannot be empty in /home/gmanmods/public_html/GMANSPORT/TOP/fighting.php on line 3
+[23-Aug-2024 08:18:08 Europe/London] PHP Warning:  DOMDocument::loadHTML(): Empty string supplied as input in /home/gmanmods/public_html/GMANSPORT/TOP/fighting.php on line 17
+[23-Aug-2024 08:18:08 Europe/London] PHP Warning:  file_get_contents(): Filename cannot be empty in /home/gmanmods/public_html/GMANSPORT/TOP/fighting.php on line 3
+[23-Aug-2024 08:18:08 Europe/London] PHP Warning:  DOMDocument::loadHTML(): Empty string supplied as input in /home/gmanmods/public_html/GMANSPORT/TOP/fighting.php on line 17
+[23-Aug-2024 08:18:08 Europe/London] PHP Warning:  file_get_contents(): Filename cannot be empty in /home/gmanmods/public_html/GMANSPORT/TOP/fighting.php on line 3
+[23-Aug-2024 08:18:08 Europe/London] PHP Warning:  DOMDocument::loadHTML(): Empty string supplied as input in /home/gmanmods/public_html/GMANSPORT/TOP/fighting.php on line 17
+[23-Aug-2024 08:18:08 Europe/London] PHP Warning:  file_get_contents(): Filename cannot be empty in /home/gmanmods/public_html/GMANSPORT/TOP/fighting.php on line 3
+[23-Aug-2024 08:18:08 Europe/London] PHP Warning:  DOMDocument::loadHTML(): Empty string supplied as input in /home/gmanmods/public_html/GMANSPORT/TOP/fighting.php on line 17
+[24-Aug-2024 14:55:22 Europe/London] PHP Warning:  file_get_contents(https://www.thesportsdb.com/browse_tv.php): failed to open stream: HTTP request failed! HTTP/1.1 503 Service Unavailable
+ in /home/gmanmods/public_html/GMANSPORT/TOP/sport_tv_today.php on line 4
+[24-Aug-2024 14:56:11 Europe/London] PHP Warning:  file_get_contents(https://www.thesportsdb.com/browse_tv.php): failed to open stream: HTTP request failed! HTTP/1.1 503 Service Unavailable
+ in /home/gmanmods/public_html/GMANSPORT/TOP/sport_tv_today.php on line 4
+[24-Aug-2024 15:03:59 Europe/London] PHP Warning:  file_get_contents(https://www.thesportsdb.com/): failed to open stream: HTTP request failed! HTTP/1.1 503 Service Unavailable
+ in /home/gmanmods/public_html/GMANSPORT/TOP/sport_top.php on line 6
+[24-Aug-2024 15:03:59 Europe/London] PHP Warning:  DOMDocument::loadHTML(): Empty string supplied as input in /home/gmanmods/public_html/GMANSPORT/TOP/sport_top.php on line 29
+[24-Aug-2024 15:04:46 Europe/London] PHP Warning:  file_get_contents(https://www.thesportsdb.com/): failed to open stream: HTTP request failed! HTTP/1.1 503 Service Unavailable
+ in /home/gmanmods/public_html/GMANSPORT/TOP/sport_top.php on line 6
+[24-Aug-2024 15:04:46 Europe/London] PHP Warning:  DOMDocument::loadHTML(): Empty string supplied as input in /home/gmanmods/public_html/GMANSPORT/TOP/sport_top.php on line 29
+[24-Aug-2024 15:12:56 Europe/London] PHP Warning:  file_get_contents(https://www.thesportsdb.com/browse_tv.php): failed to open stream: HTTP request failed! HTTP/1.1 403 Forbidden
+ in /home/gmanmods/public_html/GMANSPORT/TOP/sport_tv_today.php on line 4
+[24-Aug-2024 15:36:03 Europe/London] PHP Warning:  file_get_contents(https://www.thesportsdb.com/browse_tv.php): failed to open stream: HTTP request failed! HTTP/1.1 403 Forbidden
+ in /home/gmanmods/public_html/GMANSPORT/TOP/sport_tv_today.php on line 4
+[24-Aug-2024 15:36:26 Europe/London] PHP Warning:  file_get_contents(https://www.thesportsdb.com/): failed to open stream: HTTP request failed! HTTP/1.1 403 Forbidden
+ in /home/gmanmods/public_html/GMANSPORT/TOP/sport_top.php on line 6
+[24-Aug-2024 15:36:26 Europe/London] PHP Warning:  DOMDocument::loadHTML(): Empty string supplied as input in /home/gmanmods/public_html/GMANSPORT/TOP/sport_top.php on line 29
+[24-Aug-2024 15:36:28 Europe/London] PHP Warning:  file_get_contents(https://www.thesportsdb.com/browse_tv.php): failed to open stream: HTTP request failed! HTTP/1.1 403 Forbidden
+ in /home/gmanmods/public_html/GMANSPORT/TOP/sport_tv_today.php on line 4
+[24-Aug-2024 15:48:51 Europe/London] PHP Warning:  file_get_contents(https://www.thesportsdb.com/): failed to open stream: HTTP request failed! HTTP/1.1 403 Forbidden
+ in /home/gmanmods/public_html/GMANSPORT/TOP/sport_top.php on line 6
+[24-Aug-2024 15:48:51 Europe/London] PHP Warning:  DOMDocument::loadHTML(): Empty string supplied as input in /home/gmanmods/public_html/GMANSPORT/TOP/sport_top.php on line 29
+[24-Aug-2024 15:49:01 Europe/London] PHP Warning:  file_get_contents(https://www.thesportsdb.com/browse_tv.php): failed to open stream: HTTP request failed! HTTP/1.1 403 Forbidden
+ in /home/gmanmods/public_html/GMANSPORT/TOP/sport_tv_today.php on line 4
+[24-Aug-2024 18:23:31 Europe/London] PHP Warning:  file_get_contents(https://www.thesportsdb.com/): failed to open stream: HTTP request failed! HTTP/1.1 403 Forbidden
+ in /home/gmanmods/public_html/GMANSPORT/TOP/sport_top.php on line 6
+[24-Aug-2024 18:23:31 Europe/London] PHP Warning:  DOMDocument::loadHTML(): Empty string supplied as input in /home/gmanmods/public_html/GMANSPORT/TOP/sport_top.php on line 29
+[24-Aug-2024 18:23:35 Europe/London] PHP Warning:  file_get_contents(https://www.thesportsdb.com/browse_tv.php): failed to open stream: HTTP request failed! HTTP/1.1 403 Forbidden
+ in /home/gmanmods/public_html/GMANSPORT/TOP/sport_tv_today.php on line 4
+[24-Aug-2024 18:25:21 Europe/London] PHP Warning:  file_get_contents(https://www.thesportsdb.com/): failed to open stream: HTTP request failed! HTTP/1.1 403 Forbidden
+ in /home/gmanmods/public_html/GMANSPORT/TOP/sport_top.php on line 6
+[24-Aug-2024 18:25:21 Europe/London] PHP Warning:  DOMDocument::loadHTML(): Empty string supplied as input in /home/gmanmods/public_html/GMANSPORT/TOP/sport_top.php on line 29
+[24-Aug-2024 18:25:23 Europe/London] PHP Warning:  file_get_contents(https://www.thesportsdb.com/browse_tv.php): failed to open stream: HTTP request failed! HTTP/1.1 403 Forbidden
+ in /home/gmanmods/public_html/GMANSPORT/TOP/sport_tv_today.php on line 4
+[02-Sep-2024 16:17:36 Europe/London] PHP Warning:  include(/home/gmanmods/public_html/GMANSPORT/TOP/REdZoWof1I.php): failed to open stream: No such file or directory in /home/gmanmods/public_html/GMANSPORT/TOP/trial.php on line 1
+[02-Sep-2024 16:17:36 Europe/London] PHP Warning:  include(/home/gmanmods/public_html/GMANSPORT/TOP/REdZoWof1I.php): failed to open stream: No such file or directory in /home/gmanmods/public_html/GMANSPORT/TOP/trial.php on line 1
+[02-Sep-2024 16:17:36 Europe/London] PHP Warning:  include(): Failed opening '/home/gmanmods/public_html/GMANSPORT/TOP/REdZoWof1I.php' for inclusion (include_path='.:/opt/cpanel/ea-php74/root/usr/share/pear') in /home/gmanmods/public_html/GMANSPORT/TOP/trial.php on line 1
+[02-Sep-2024 16:17:40 Europe/London] PHP Warning:  include(/home/gmanmods/public_html/GMANSPORT/TOP/REdZoWof1I.php): failed to open stream: No such file or directory in /home/gmanmods/public_html/GMANSPORT/TOP/trial.php on line 1
+[02-Sep-2024 16:17:40 Europe/London] PHP Warning:  include(/home/gmanmods/public_html/GMANSPORT/TOP/REdZoWof1I.php): failed to open stream: No such file or directory in /home/gmanmods/public_html/GMANSPORT/TOP/trial.php on line 1
+[02-Sep-2024 16:17:40 Europe/London] PHP Warning:  include(): Failed opening '/home/gmanmods/public_html/GMANSPORT/TOP/REdZoWof1I.php' for inclusion (include_path='.:/opt/cpanel/ea-php74/root/usr/share/pear') in /home/gmanmods/public_html/GMANSPORT/TOP/trial.php on line 1
+[26-Oct-2024 12:23:05 Europe/London] PHP Warning:  file_get_contents(): Filename cannot be empty in /home/gmanmods/public_html/GMANSPORT/TOP/fighting.php on line 3
+[26-Oct-2024 12:23:05 Europe/London] PHP Warning:  DOMDocument::loadHTML(): Empty string supplied as input in /home/gmanmods/public_html/GMANSPORT/TOP/fighting.php on line 17
+[26-Oct-2024 12:23:05 Europe/London] PHP Warning:  file_get_contents(): Filename cannot be empty in /home/gmanmods/public_html/GMANSPORT/TOP/fighting.php on line 3
+[26-Oct-2024 12:23:05 Europe/London] PHP Warning:  DOMDocument::loadHTML(): Empty string supplied as input in /home/gmanmods/public_html/GMANSPORT/TOP/fighting.php on line 17
+[26-Oct-2024 12:23:05 Europe/London] PHP Warning:  file_get_contents(): Filename cannot be empty in /home/gmanmods/public_html/GMANSPORT/TOP/fighting.php on line 3
+[26-Oct-2024 12:23:05 Europe/London] PHP Warning:  DOMDocument::loadHTML(): Empty string supplied as input in /home/gmanmods/public_html/GMANSPORT/TOP/fighting.php on line 17

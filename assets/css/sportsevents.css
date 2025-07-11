@@ -1,0 +1,296 @@
+body {
+    font-family: "Arial", sans-serif;
+    background-color: transparent;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background-color: transparent;
+    background-size: cover;
+    background-position: center;
+}
+
+.container {
+  width: 100%; /* Set to full width */
+  max-width: 100%; /* Optional: Limit max width for larger screens */
+  margin: 0 auto; /* Center align the container */
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  overflow-y: auto; /* Enables internal scrolling */
+}
+
+.event-date {
+  color: #ffffff;
+  background-color: transparent;
+  font-weight: bold;
+  text-align: center; /* Centered date heading */
+  font-size: 1em; /* Increase font size for visibility */
+  padding: 5px;
+}
+
+.event-row {
+  display: flex; /* Use Flexbox for horizontal alignment */
+  flex-wrap: nowrap; /* Prevent wrapping to a new line */
+  overflow-x: auto; /* Allow horizontal scrolling if necessary */
+  margin-bottom: 20px; /* Space between date sections */
+}
+
+.event-row-container {
+  display: flex; /* Use flexbox for horizontal alignment */
+  overflow-x: auto; /* Enable horizontal scrolling */
+  white-space: nowrap; /* Prevent cards from wrapping to the next line */
+  padding: 10px; /* Padding around the container */
+}
+
+.event-card {
+  position: relative; /* Position relative to position overlay */
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 5px;
+  cursor: pointer;
+  width: 200px; /* Fixed width for each card */
+  margin-right: 10px; /* Space between cards */
+  flex-shrink: 0; /* Prevent cards from shrinking */
+  overflow: hidden; /* Hide overflow content */
+  border-radius: 10px; /* Rounded corners for cards */
+  transition: box-shadow 0.3s; /* Smooth transition for box shadow */
+}
+
+.event-thumbnail {
+  width: 100%; /* Fill the width of the card */
+  height: 100%; /* Fill the height of the card */
+  object-fit: cover; /* Cover the entire card while maintaining aspect ratio */
+  border-radius: 10px; /* Rounded corners for images */
+}
+
+.overlay {
+  position: absolute; /* Position overlay on top of thumbnail */
+  top: 0; /* Align to the top */
+  left: 0; /* Align to the left */
+  width: 100%; /* Match the width of the event card */
+  height: 100%; /* Match the height of the event card */
+  background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent black background */
+  color: white; /* Text color */
+  display: flex; /* Flexbox for centering content */
+  flex-direction: column; /* Stack items vertically */
+  align-items: center; /* Center items horizontally */
+  justify-content: center; /* Center items vertically */
+  border-radius: 10px; /* Rounded corners for overlay */
+  opacity: 1; /* Start with hidden overlay */
+  transition: opacity 0.3s; /* Smooth transition for hover effect */
+}
+
+
+/* Optional: Highlight effect for focused card */
+.event-card:focus {
+  outline: none; /* Remove default outline */
+  border: 2px solid #e5a209; /* Highlight border */
+  box-shadow: 0 0 10px rgba(229, 162, 9, 0.7); /* Optional shadow for emphasis */
+}
+
+.overlay-content {
+    text-align: center; /* Center the text */
+    font-size: 10px;
+    word-wrap: break-word; /* Break long words to prevent overflow */
+    overflow-wrap: break-word; /* Ensures compatibility for all browsers */
+    max-width: 70%; /* Optional: Constrain width for better alignment */
+    line-height: 1.4; /* Improve readability with appropriate line height */
+    white-space: normal; /* Allow text to wrap naturally */
+}
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    text-align: center;
+    overflow: hidden;
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #141414;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Center the modal */
+    padding: 20px;
+    border: 1px solid #e5a209;
+    color: #ffffff;
+    width: 40%;
+    max-height: 75%;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+}
+
+/* Table Styling */
+.tv-channel-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.tv-channel-table th, .tv-channel-table td {
+    padding: 10px;
+    text-align: center;
+    font-size: 10px;
+    border: 0px solid #ccc;
+}
+
+.tv-channel-table th {
+    background-color: #333;
+    color: #fff;
+}
+
+.tv-channel-table td img {
+    width: 50px; /* Size of the channel logo */
+    display: block;
+    margin: 0 auto;
+}
+
+/* Make the tbody of the table scrollable and hide the scrollbar */
+.tv-channel-table tbody {
+    display: block;
+    color: #fff;
+    max-height: 400px; /* Set a maximum height for the tbody */
+    overflow-y: scroll; /* Enable vertical scrolling */
+    width: 100%;
+    -ms-overflow-style: none;  /* Hide scrollbar in Internet Explorer */
+    scrollbar-width: none; /* Hide scrollbar in Firefox */
+}
+
+.tv-channel-table tbody::-webkit-scrollbar {
+    display: none; /* Hide scrollbar in WebKit-based browsers (Chrome, Safari) */
+}
+
+.tv-channel-table thead,
+.tv-channel-table tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed; /* Ensure the table layout is fixed */
+}
+
+.tv-channel-table tbody td {
+    word-wrap: break-word; /* Break long words to prevent horizontal scrolling */
+
+}
+
+/* Add highlighting for selected row */
+.tv-channel-table tbody tr.selected {
+    background-color: #e5a209; /* Highlight color */
+    color: #fff; /* Change text color when selected */
+}
+
+/* General Styles for All Screens (already included above) */
+
+/* Small Mobile Devices (up to 480px) */
+@media screen and (max-width: 480px) {
+
+    .event-card {
+        width: 150px; /* Smaller cards for small screens */
+        margin-right: 5px;
+    }
+
+    .overlay-content {
+        font-size: 8px; /* Adjust text size for smaller screens */
+        max-width: 90%;
+    }
+
+    .modal-content {
+        width: 90%; /* Full-width modal for small screens */
+        padding: 10px;
+    }
+
+    .tv-channel-table th, .tv-channel-table td {
+        font-size: 8px; /* Smaller font for table content */
+    }
+}
+
+/* Tablets (481px to 768px) */
+@media screen and (min-width: 481px) and (max-width: 768px) {
+    .event-card {
+        width: 180px; /* Slightly larger cards */
+    }
+
+    .overlay-content {
+        font-size: 9px;
+    }
+
+    .modal-content {
+        width: 75%;
+    }
+
+    .tv-channel-table th, .tv-channel-table td {
+        font-size: 9px;
+    }
+}
+
+/* Landscape Tablets or Small Laptops (769px to 1024px) */
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+    .event-card {
+        width: 220px; /* Larger cards for more screen space */
+    }
+
+    .overlay-content {
+        font-size: 10px;
+    }
+
+    .modal-content {
+        width: 60%;
+    }
+
+    .tv-channel-table th, .tv-channel-table td {
+        font-size: 10px;
+    }
+}
+
+/* Desktop Screens (1025px and above) */
+@media screen and (min-width: 1025px) {
+
+    .event-card {
+        width: 250px; /* Full-size cards */
+    }
+
+    .overlay-content {
+        font-size: 12px;
+    }
+
+    .modal-content {
+        width: 50%;
+    }
+
+    .tv-channel-table th, .tv-channel-table td {
+        font-size: 12px;
+    }
+}
+
+/* Large TV Screens (1920px and above) */
+@media screen and (min-width: 1920px) {
+
+    .event-card {
+        width: 300px; /* Larger cards for TV screens */
+    }
+
+    .overlay-content {
+        font-size: 14px;
+    }
+
+    .modal-content {
+        width: 40%;
+    }
+
+    .tv-channel-table th, .tv-channel-table td {
+        font-size: 14px;
+    }
+
+    .tv-channel-table tbody {
+        max-height: 600px; /* Adjust for large screen height */
+    }
+}

@@ -1,0 +1,33 @@
+# Disable directory browsing
+Options -Indexes
+
+# Error document configuration
+ErrorDocument 403 /forbidden.php
+
+# Enable Rewrite Engine
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Redirect root to login.php
+    RewriteCond %{HTTP_HOST} ^webviews\.streamnet\.live$ [NC]
+    RewriteCond %{REQUEST_URI} ^/?$
+    RewriteRule ^$ login.php [L]
+
+    # Force HTTPS
+    RewriteCond %{HTTPS} off
+    RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+# Basic security
+<Files "forbidden.php">
+    Require all granted
+</Files>
+
+# Prevent direct access to sensitive files
+<FilesMatch "^(\.htaccess|\.env|config\.)">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Disable server signature
+ServerSignature Off

@@ -1,0 +1,714 @@
+/* ======================================
+   Base Styles and Reset
+   ====================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* Include padding and border in element's total width/height */
+}
+
+body {
+  height: 100vh; /* Use viewport height for body */
+  margin: 0; /* Remove default body margin */
+  font-family: "Segoe UI", sans-serif; /* Set a default font */
+  overflow: hidden; /* Hide any overflow content to prevent scrollbars */
+  display: flex;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover; /* Default to cover */
+  background-color: #141414; /* Fallback background color */
+  justify-content: center; /* Center content horizontally */
+  align-items: center; /* Center content vertically */
+}
+
+/* ======================================
+     Container and Layout Styles
+     ====================================== */
+.container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  position: fixed;
+  overflow: hidden;
+  justify-content: center;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover; /* Default to cover */
+  background-color: #141414; /* Fallback background color */
+}
+
+.col,
+.row {
+  flex: 1; /* Expand to fill available space */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Hide any overflow content to prevent scrollbars */
+}
+
+/* ======================================
+     Navigation Controls
+     ====================================== */
+#prev img,
+#next img {
+  width: auto; /* Allow the width to adjust automatically */
+  height: 100%; /* Set the height to 100% */
+  max-height: none; /* Disable the max-height property */
+  transform: scale(0.6);
+  opacity: 0.5;
+  transition: opacity 0.3s ease, filter 0.3s ease;
+}
+
+#prev:hover img,
+#next:hover img {
+  filter: invert(100%);
+  opacity: 0.75;
+}
+
+#prev:hover,
+#next:hover {
+  background-color: rgba(0, 0, 0, 0.75);
+  transition: background-color 0.3s ease;
+}
+
+#prev {
+  left: 0;
+  position: absolute;
+  z-index: 10;
+  cursor: pointer;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+#next {
+  right: 0;
+  position: absolute;
+  z-index: 10;
+  cursor: pointer;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+/* ======================================
+     Dots Navigation
+     ====================================== */
+#dots {
+  width: 100%;
+  height: 50px;
+  position: absolute;
+  z-index: 10;
+  bottom: 0;
+  display: flex;
+  background-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0),
+    rgba(0, 0, 0, 0.7)
+  );
+  padding-bottom: 15px;
+  justify-content: center;
+  align-items: flex-end;
+  visibility: hidden;
+}
+
+.dot-container {
+  height: 50px;
+  margin: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: flex-end;
+  transition: all 0.2s;
+}
+
+.dot-container:hover .dot {
+  height: 50px;
+  opacity: 1;
+}
+
+.dot {
+  height: 0px;
+  width: 0px;
+  border: solid white 2.5px;
+  background-color: rgba(226, 245, 236, 0.7);
+  background-size: cover;
+  background-position: center;
+  opacity: 0.5;
+  transition: all 0.05s, opacity 0.5s;
+}
+
+.dot.active {
+  opacity: 1;
+}
+
+/* ======================================
+     Visibility Classes
+     ====================================== */
+.hidden {
+  width: 0%;
+  height: 0%;
+}
+
+.visible {
+  width: 100%;
+  height: 100%;
+}
+
+/* ======================================
+     Animation Classes - Push and Pull
+     ====================================== */
+/* Push Up/Down Animations */
+.pushUpDown:nth-child(odd) {
+  transform: translateY(-100%);
+  animation: pushDown 1s forwards;
+  animation-fill-mode: forwards;
+}
+
+.pushUpDown:nth-child(even) {
+  transform: translateY(100%);
+  animation: pushUp 1s forwards;
+  animation-fill-mode: forwards;
+}
+
+.pushUpDown div.content {
+  width: 100%;
+  height: 100%;
+}
+
+@keyframes pushDown {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0%);
+  }
+}
+
+@keyframes pushUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0%);
+  }
+}
+
+/* Pull Up/Down Animations */
+.pullUpDown:nth-child(odd) {
+  transform: translateY(-100%);
+  animation: pullDown 1s forwards;
+  animation-fill-mode: forwards;
+}
+
+.pullUpDown:nth-child(even) {
+  transform: translateY(100%);
+  animation: pullUp 1s forwards;
+  animation-fill-mode: forwards;
+}
+
+.pullUpDown div.content {
+  width: 100%;
+  height: 100%;
+}
+
+.pullDown {
+  animation: pullDown 1s forwards;
+  animation-fill-mode: forwards;
+}
+
+@keyframes pullDown {
+  from {
+    transform: translateY(0%);
+  }
+  to {
+    transform: translateY(100%);
+  }
+}
+
+.pullUp {
+  animation: pullUp 1s forwards;
+  animation-fill-mode: forwards;
+}
+
+@keyframes pullUp {
+  from {
+    transform: translateY(0%);
+  }
+  to {
+    transform: translateY(-100%);
+  }
+}
+
+/* Left/Right Animations */
+.pushLeft {
+  animation: pushLeft 1s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes pushLeft {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0%);
+  }
+}
+
+.pushRight {
+  animation: pushRight 1s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes pushRight {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0%);
+  }
+}
+
+.pullLeft {
+  animation: pullLeft 1s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes pullLeft {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+.pullRight {
+  animation: pullRight 1s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes pullRight {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+/* ======================================
+     Animation Classes - Scaling
+     ====================================== */
+.bigger {
+  animation: bigger 1s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes bigger {
+  from {
+    transform: scale(0.75);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.smaller {
+  animation: smaller 1s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes smaller {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(0.75);
+  }
+}
+
+/* ======================================
+     Animation Classes - Box Transformations
+     ====================================== */
+.boxShrink {
+  animation: boxShrink 0.5s;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+@keyframes boxShrink {
+  from {
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+  }
+  to {
+    width: 0%;
+    height: 0%;
+    opacity: 0.5;
+  }
+}
+
+.boxEmerge {
+  animation: boxEmerge 1s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes boxEmerge {
+  from {
+    width: 0%;
+    height: 0%;
+  }
+  to {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+/* ======================================
+     Animation Classes - Misc
+     ====================================== */
+.slideCol {
+  width: 0%;
+  height: 100%;
+  animation: slideCol 1s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes slideCol {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+.fade {
+  animation: fade 0.5s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ======================================
+     Slide Header Styles
+     ====================================== */
+.slide-header {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  user-select: none;
+  opacity: 0;
+  cursor: pointer;
+  width: 70%;
+  height: 40%;
+  box-sizing: border-box;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  border-radius: 10px;
+  display: flex;
+  z-index: 20;
+  transition: all 0.5s;
+  color: white;
+  font-family: "Segoe UI", sans-serif;
+  font-size: 1.5em;
+  backdrop-filter: blur(5px);
+}
+
+.slide-header.in {
+  animation: slideHeaderIn 1s 1s;
+  animation-fill-mode: forwards;
+}
+
+.slide-header.out {
+  animation: slideHeaderOut 0.2s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes slideHeaderIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -40%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+@keyframes slideHeaderOut {
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -60%);
+  }
+}
+
+.header-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  flex: 1;
+  overflow: hidden;
+  justify-content: flex-start;
+}
+
+.logo {
+  height: auto;
+  max-height: 7vh;
+  max-width: 60%;
+  margin-bottom: 15px; /* Adjust space between logo and title */
+  object-fit: contain;
+}
+
+.title-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: center;
+}
+
+.title-year {
+  font-weight: bold;
+  text-shadow: 0px 0px 5px #000;
+  font-size: clamp(0.2em, 1.5vw, 4em);
+  margin-bottom: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.title {
+  font-weight: bold;
+  text-shadow: 0px 0px 5px #000;
+  font-size: 3em;
+  margin-bottom: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.year {
+  font-style: italic;
+  text-shadow: 0px 0px 5px #000;
+  margin-left: 5px; /* Slight spacing between title and year */
+  font-size: 3em;
+  margin-bottom: 10px;
+}
+
+.subtitle-wrapper {
+  position: relative;
+  width: 100%;
+  flex: 1;
+  overflow: hidden;
+  margin-top: 10px;
+}
+
+.subtitle {
+  font-weight: 400;
+  font-size: clamp(0.2em, 1.2vw, 3em);
+  color: #eee;
+  text-shadow: 0px 0px 5px #000;
+  padding: 0 15px;
+  line-height: 1.4;
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+}
+
+.subtitle.scrolling {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  animation: autoscroll 30s linear infinite;
+  animation-delay: 3s;
+}
+
+
+.subtitle:hover {
+  animation-play-state: running;
+}
+
+@keyframes autoscroll {
+  0% {
+    transform: translateY(0);
+  }
+  85% {
+    transform: translateY(calc(-100% + 100px)); /* Stop before completely scrolling out */
+  }
+  95%, 100% {
+    transform: translateY(0); /* Return to start */
+  }
+}
+
+.poster {
+  height: 100%;
+  border-radius: 10px;
+  align-self: flex-end;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+
+/* ======================================
+     Media Queries
+     ====================================== */
+/* Mobile (portrait) */
+@media only screen and (max-width: 480px) {
+  .slide-header {
+    width: 90%;
+    height: 60%;
+    padding: 10px;
+  }
+
+  .logo {
+    max-height: 5vh;
+  }
+
+  .title-year {
+    font-size: clamp(0.2em, 4vw, 2em);
+  }
+
+  .subtitle {
+    font-size: clamp(0.2em, 3vw, 1.5em);
+    line-height: 1.3;
+  }
+
+  .subtitle-wrapper {
+    height: calc(100% - 100px);
+  }
+
+  .poster {
+    max-height: 80%;
+  }
+
+  #prev,
+  #next {
+    width: 40px;
+  }
+}
+
+/* Mobile (landscape) and small tablets */
+@media only screen and (min-width: 481px) and (max-width: 768px) {
+  .slide-header {
+    width: 85%;
+    height: 45%;
+  }
+
+  .logo {
+    max-height: 6vh;
+  }
+
+  .title-year {
+    font-size: clamp(0.2em, 3vw, 3em);
+  }
+
+  .subtitle-wrapper {
+    height: calc(100% - 110px);
+  }
+
+  #prev,
+  #next {
+    width: 45px;
+  }
+}
+
+/* Tablets and small laptops */
+@media only screen and (min-width: 769px) and (max-width: 1024px) {
+  .slide-header {
+    width: 80%;
+  }
+
+  .logo {
+    max-height: 7vh;
+  }
+
+  .title-year {
+    font-size: clamp(0.2em, 2vw, 3.5em);
+  }
+
+  .subtitle-wrapper {
+    height: calc(100% - 120px);
+  }
+}
+
+/* Desktops and large laptops */
+@media only screen and (min-width: 1025px) and (max-width: 1440px) {
+  .slide-header {
+    width: 75%;
+  }
+
+  .subtitle-wrapper {
+    height: calc(100% - 120px);
+  }
+}
+
+/* Large desktop screens */
+@media only screen and (min-width: 1441px) and (max-width: 2560px) {
+  .slide-header {
+    width: 65%;
+    height: 35%;
+  }
+
+  .logo {
+    max-height: 8vh;
+  }
+
+  .title-year {
+    font-size: clamp(0.2em, 1.8vw, 4.5em);
+  }
+
+  .subtitle {
+    font-size: clamp(0.2em, 1.4vw, 3.5em);
+    line-height: 1.4;
+  }
+
+  .subtitle-wrapper {
+    height: calc(100% - 140px);
+  }
+}
+
+/* 4K displays */
+@media only screen and (min-width: 2561px) {
+  .slide-header {
+    width: 60%;
+    height: 30%;
+  }
+
+  .logo {
+    max-height: 10vh;
+    max-width: 50%;
+  }
+
+  .title-year {
+    font-size: clamp(0.2em, 1.5vw, 5em);
+    margin-bottom: 20px;
+  }
+
+  .subtitle {
+    font-size: clamp(0.2em, 1.2vw, 4em);
+    margin-left: 25px;
+    margin-right: 25px;
+  }
+
+  .subtitle-wrapper {
+    height: calc(100% - 180px);
+  }
+
+  .poster {
+    border-radius: 15px;
+  }
+}

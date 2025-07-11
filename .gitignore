@@ -1,5 +1,2 @@
-/data
-/node_modules
-/node_modules
-*.db
-lackiererei.db
+/api/cache
+/databases

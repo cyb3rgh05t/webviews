@@ -1,0 +1,19 @@
+Upload the zip file to your hosting
+
+unpack it.
+
+Any app that has an existing sports guide can be made to redirect to your own sports guide for this lets call it sportx
+
+you need to go into the app panel and open the api folder and look for either sport.php or sports.php and replace it with the sport.php provided this will then tell the apk when sports button is pressed to goto the link in the file.
+
+I keep the sportx files in thier own folder and link any app to them like a master guide people would have to have access to the panel files to find out what is going on.
+
+no need to touch any apk its all done through panels
+
+once you have SMANSPORT uploaded and unpack  take a look at the structure the main file that is doing all the work is sports.php this controls everything.
+
+i used SPORTS directory for items on the left menu and TOP for items on the top menu images are for graphics used etc. easy enough to work out.
+
+you will need to go through the sports.php and change paths to your own hosting pretty straight forward  a lot of work went into this file in particular.
+
+it looks pretty straight forward to me but i did spend a lot of time working with it , if you have any issues ask away but i suspect you should be ok.

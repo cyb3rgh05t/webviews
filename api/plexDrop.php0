@@ -1,0 +1,653 @@
+<?php
+// Increase maximum execution time
+set_time_limit(0); // Adjust the time limit as needed
+
+// Connect to the SQLite database
+$db = new SQLite3('../databases/backdrop.db');
+
+// Query to retrieve the API key and server URL from the 'api_key' table
+$query = "SELECT token, url, key FROM backdrops LIMIT 1";
+$result = $db->query($query);
+$row = $result->fetchArray(SQLITE3_ASSOC);
+$plexToken = $row['token'];
+$plexServerUrl = $row['url'];
+$tmdbApi = $row['key'];
+
+// Close the database connection
+$db->close();
+
+// Define the cache folder and file path
+$cache_folder = 'cache/';
+$cache_file = $cache_folder . 'combined_cache.json';
+
+// Create the cache folder if it doesn't exist
+if (!file_exists($cache_folder)) {
+    if (!mkdir($cache_folder, 0777, true)) {
+        die('Failed to create cache folder');
+    }
+}
+
+// Cache validity duration (12 hours in seconds)
+$cache_duration = 24 * 60 * 60;
+
+// Check if cached data is still valid
+if (file_exists($cache_file) && time() - filemtime($cache_file) < $cache_duration) {
+    // Use cached data
+    $cached_data = file_get_contents($cache_file);
+    $combined_data = json_decode($cached_data, true);
+} else {
+    // Helper function to fetch and filter items from Plex
+    function fetchAndFilterMovies($url, $plexToken, $plexServerUrl, $tmdbApi)
+    {
+        $curl = curl_init($url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, [
+            "X-Plex-Token: $plexToken"
+        ]);
+
+        // Function to disable SSL verification (temporary solution)
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+
+        $response = curl_exec($curl);
+        if ($response === false) {
+            die('Error fetching data from Plex server: ' . curl_error($curl));
+        }
+        curl_close($curl);
+
+        $xml = simplexml_load_string($response);
+        if ($xml === false) {
+            die('Error parsing XML response.');
+        }
+
+        $items = [];
+
+        foreach ($xml->Video as $video) {
+            $title = (string) $video['title'];
+            $subtitle = (string) $video['summary'];
+            $id = (string) $video['ratingKey'];
+            $thumb = "https://panel.streamnet.live/api/proxy.php?url=" . urlencode("http://$plexServerUrl" . (string) $video['thumb'] . "?X-Plex-Token=$plexToken");
+            $art = "https://panel.streamnet.live/api/proxy.php?url=" . urlencode("http://$plexServerUrl" . (string) $video['art'] . "?X-Plex-Token=$plexToken");
+            $url = "https://panel.streamnet.live/api/proxy.php?url=" . urlencode("http://$plexServerUrl/web/index.html#!/server/$id/details?key=%2Flibrary%2Fmetadata%2F$id");
+            $tmdb = fetchTmdbMoviesId($id, $plexToken, $plexServerUrl);
+            $tmdb_id = $tmdb;
+            $fallbackLogoUrl = 'https://app.streamnet.live/pics/streamnet_tv.png';
+            $logo = fetchTmdbMoviesLogo($tmdb_id, $tmdbApi, $fallbackLogoUrl);
+
+
+            $items[] = array(
+                "plex_id" => $id,
+                "tmdb_id" => $tmdb_id,
+                "logo" => $logo,
+                "title" => $title,
+                "subtitle" => $subtitle,
+                "image" => $art,
+                "artWork" => $thumb,
+                "url" => $url,
+                "date" => (string) $video['originallyAvailableAt']
+            );
+        }
+
+        return $items;
+    }
+
+    function fetchAndFilterMoviesMarvel($url, $plexToken, $plexServerUrl, $tmdbApi)
+    {
+        $curl = curl_init($url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, [
+            "X-Plex-Token: $plexToken"
+        ]);
+
+        // Function to disable SSL verification (temporary solution)
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+
+        $response = curl_exec($curl);
+        if ($response === false) {
+            die('Error fetching data from Plex server: ' . curl_error($curl));
+        }
+        curl_close($curl);
+
+        $xml = simplexml_load_string($response);
+        if ($xml === false) {
+            die('Error parsing XML response.');
+        }
+
+        $items = [];
+
+        foreach ($xml->Video as $video) {
+            $title = (string) $video['title'];
+            $subtitle = (string) $video['summary'];
+            $id = (string) $video['ratingKey'];
+            $thumb = "https://webviews.streamnet.live/api/proxy.php?url=" . urlencode("http://$plexServerUrl" . (string) $video['thumb'] . "?X-Plex-Token=$plexToken");
+            $art = "https://webviews.streamnet.live/api/proxy.php?url=" . urlencode("http://$plexServerUrl" . (string) $video['art'] . "?X-Plex-Token=$plexToken");
+            $url = "https://webviews.streamnet.live/api/proxy.php?url=" . urlencode("http://$plexServerUrl/web/index.html#!/server/$id/details?key=%2Flibrary%2Fmetadata%2F$id");
+            $tmdb = fetchTmdbMoviesId($id, $plexToken, $plexServerUrl);
+            $tmdb_id = $tmdb;
+            $fallbackLogoUrl = 'https://app.streamnet.live/pics/streamnet_tv.png';
+            $logo = fetchTmdbMoviesLogo($tmdb_id, $tmdbApi, $fallbackLogoUrl);
+
+
+            $items[] = array(
+                "plex_id" => $id,
+                "tmdb_id" => $tmdb_id,
+                "logo" => $logo,
+                "title" => $title,
+                "subtitle" => $subtitle,
+                "image" => $art,
+                "artWork" => $thumb,
+                "url" => $url,
+                "date" => (string) $video['originallyAvailableAt']
+            );
+        }
+
+        return $items;
+    }
+
+    function fetchAndFilterMoviesDc($url, $plexToken, $plexServerUrl, $tmdbApi)
+    {
+        $curl = curl_init($url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, [
+            "X-Plex-Token: $plexToken"
+        ]);
+
+        // Function to disable SSL verification (temporary solution)
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+
+        $response = curl_exec($curl);
+        if ($response === false) {
+            die('Error fetching data from Plex server: ' . curl_error($curl));
+        }
+        curl_close($curl);
+
+        $xml = simplexml_load_string($response);
+        if ($xml === false) {
+            die('Error parsing XML response.');
+        }
+
+        $items = [];
+
+        foreach ($xml->Video as $video) {
+            $title = (string) $video['title'];
+            $subtitle = (string) $video['summary'];
+            $id = (string) $video['ratingKey'];
+            $thumb = "https://webviews.streamnet.live/api/proxy.php?url=" . urlencode("http://$plexServerUrl" . (string) $video['thumb'] . "?X-Plex-Token=$plexToken");
+            $art = "https://webviews.streamnet.live/api/proxy.php?url=" . urlencode("http://$plexServerUrl" . (string) $video['art'] . "?X-Plex-Token=$plexToken");
+            $url = "https://webviews.streamnet.live/api/proxy.php?url=" . urlencode("http://$plexServerUrl/web/index.html#!/server/$id/details?key=%2Flibrary%2Fmetadata%2F$id");
+            $tmdb = fetchTmdbMoviesId($id, $plexToken, $plexServerUrl);
+            $tmdb_id = $tmdb;
+            $fallbackLogoUrl = 'https://app.streamnet.live/pics/streamnet_tv.png';
+            $logo = fetchTmdbMoviesLogo($tmdb_id, $tmdbApi, $fallbackLogoUrl);
+
+
+            $items[] = array(
+                "plex_id" => $id,
+                "tmdb_id" => $tmdb_id,
+                "logo" => $logo,
+                "title" => $title,
+                "subtitle" => $subtitle,
+                "image" => $art,
+                "artWork" => $thumb,
+                "url" => $url,
+                "date" => (string) $video['originallyAvailableAt']
+            );
+        }
+
+        return $items;
+    }
+
+    function fetchAndFilterMoviesBond($url, $plexToken, $plexServerUrl, $tmdbApi)
+    {
+        $curl = curl_init($url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, [
+            "X-Plex-Token: $plexToken"
+        ]);
+
+        // Function to disable SSL verification (temporary solution)
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+
+        $response = curl_exec($curl);
+        if ($response === false) {
+            die('Error fetching data from Plex server: ' . curl_error($curl));
+        }
+        curl_close($curl);
+
+        $xml = simplexml_load_string($response);
+        if ($xml === false) {
+            die('Error parsing XML response.');
+        }
+
+        $items = [];
+
+        foreach ($xml->Video as $video) {
+            $title = (string) $video['title'];
+            $subtitle = (string) $video['summary'];
+            $id = (string) $video['ratingKey'];
+            $thumb = "https://webviews.streamnet.live/api/proxy.php?url=" . urlencode("http://$plexServerUrl" . (string) $video['thumb'] . "?X-Plex-Token=$plexToken");
+            $art = "https://webviews.streamnet.live/api/proxy.php?url=" . urlencode("http://$plexServerUrl" . (string) $video['art'] . "?X-Plex-Token=$plexToken");
+            $url = "https://webviews.streamnet.live/api/proxy.php?url=" . urlencode("http://$plexServerUrl/web/index.html#!/server/$id/details?key=%2Flibrary%2Fmetadata%2F$id");
+            $tmdb = fetchTmdbMoviesId($id, $plexToken, $plexServerUrl);
+            $tmdb_id = $tmdb;
+            $fallbackLogoUrl = 'https://app.streamnet.live/pics/streamnet_tv.png';
+            $logo = fetchTmdbMoviesLogo($tmdb_id, $tmdbApi, $fallbackLogoUrl);
+
+
+            $items[] = array(
+                "plex_id" => $id,
+                "tmdb_id" => $tmdb_id,
+                "logo" => $logo,
+                "title" => $title,
+                "subtitle" => $subtitle,
+                "image" => $art,
+                "artWork" => $thumb,
+                "url" => $url,
+                "date" => (string) $video['originallyAvailableAt']
+            );
+        }
+
+        return $items;
+    }
+
+    function fetchAndFilterMoviesAnimation($url, $plexToken, $plexServerUrl, $tmdbApi)
+    {
+        $curl = curl_init($url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, [
+            "X-Plex-Token: $plexToken"
+        ]);
+
+        // Function to disable SSL verification (temporary solution)
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+
+        $response = curl_exec($curl);
+        if ($response === false) {
+            die('Error fetching data from Plex server: ' . curl_error($curl));
+        }
+        curl_close($curl);
+
+        $xml = simplexml_load_string($response);
+        if ($xml === false) {
+            die('Error parsing XML response.');
+        }
+
+        $items = [];
+
+        foreach ($xml->Video as $video) {
+            $title = (string) $video['title'];
+            $subtitle = (string) $video['summary'];
+            $id = (string) $video['ratingKey'];
+            $thumb = "https://webviews.streamnet.live/api/proxy.php?url=" . urlencode("http://$plexServerUrl" . (string) $video['thumb'] . "?X-Plex-Token=$plexToken");
+            $art = "https://webviews.streamnet.live/api/proxy.php?url=" . urlencode("http://$plexServerUrl" . (string) $video['art'] . "?X-Plex-Token=$plexToken");
+            $url = "https://webviews.streamnet.live/api/proxy.php?url=" . urlencode("http://$plexServerUrl/web/index.html#!/server/$id/details?key=%2Flibrary%2Fmetadata%2F$id");
+            $tmdb = fetchTmdbMoviesId($id, $plexToken, $plexServerUrl);
+            $tmdb_id = $tmdb;
+            $fallbackLogoUrl = 'https://app.streamnet.live/pics/streamnet_tv.png';
+            $logo = fetchTmdbMoviesLogo($tmdb_id, $tmdbApi, $fallbackLogoUrl);
+
+
+            $items[] = array(
+                "plex_id" => $id,
+                "tmdb_id" => $tmdb_id,
+                "logo" => $logo,
+                "title" => $title,
+                "subtitle" => $subtitle,
+                "image" => $art,
+                "artWork" => $thumb,
+                "url" => $url,
+                "date" => (string) $video['originallyAvailableAt']
+            );
+        }
+
+        return $items;
+    }
+
+    // Function to search for a specific movie Tmdb ID
+    function fetchTmdbMoviesId($id, $plexToken, $plexServerUrl)
+    {
+        // Construct the URL
+        $url = "http://$plexServerUrl/library/metadata/$id?checkFiles=1&X-Plex-Token=$plexToken";
+
+        // Initialize cURL
+        $curl = curl_init($url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, [
+            "X-Plex-Token: $plexToken"
+        ]);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+
+        // Execute cURL request
+        $response = curl_exec($curl);
+        if ($response === false) {
+            die('Error fetching data from Plex server: ' . curl_error($curl));
+        }
+        curl_close($curl);
+
+        // Load XML from response
+        $xml = simplexml_load_string($response);
+        if ($xml === false) {
+            die('Error parsing XML response.');
+        }
+
+        // Iterate through the XML to find the TMDB ID
+        foreach ($xml->Video->Guid as $guid) {
+            $guidValue = (string) $guid['id'];
+            if (preg_match('/tmdb:\/\/(\d+)/', $guidValue, $matches)) {
+                return $matches[1]; // Return the TMDB ID
+            }
+        }
+
+        return null; // Return null if no TMDB ID is found
+    }
+
+    function fetchTmdbMoviesLogo($tmdb_id, $tmdbApi, $fallbackLogoUrl)
+    {
+        $url = "https://api.themoviedb.org/3/movie/$tmdb_id?api_key=$tmdbApi&append_to_response=images";
+        $fallbackLogoUrl = 'https://app.streamnet.live/pics/streamnet_tv.png';
+
+        // Initialize cURL session
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+
+        // Execute cURL request
+        $response = curl_exec($curl);
+        if ($response === false) {
+            $error_message = 'Error fetching data from TMDb: ' . curl_error($curl);
+            curl_close($curl);
+            throw new Exception($error_message);
+        }
+
+        // Close cURL session
+        curl_close($curl);
+
+        // Decode JSON response
+        $data = json_decode($response, true);
+
+        // Check if data is empty or the required keys are missing
+        if (empty($data) || !isset($data['images']) || !isset($data['images']['logos'])) {
+            return $fallbackLogoUrl;
+        }
+
+        // Find the German or English logo
+        $logos = $data['images']['logos'];
+        $selectedLogo = null;
+
+        foreach ($logos as $logo) {
+            if ($logo['iso_639_1'] === 'de') {
+                $selectedLogo = $logo;
+                break;
+            }
+        }
+
+        if (!$selectedLogo) {
+            foreach ($logos as $logo) {
+                if ($logo['iso_639_1'] === 'en') {
+                    $selectedLogo = $logo;
+                    break;
+                }
+            }
+        }
+
+        // Check if a logo was found
+        if ($selectedLogo) {
+            return "https://image.tmdb.org/t/p/original" . $selectedLogo['file_path'];
+        } else {
+            return $fallbackLogoUrl;
+        }
+    }
+
+    function fetchAndFilterSeries($url, $plexToken, $plexServerUrl, $tmdbApi)
+    {
+        $curl = curl_init($url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, [
+            "X-Plex-Token: $plexToken"
+        ]);
+
+        // Function to disable SSL verification (temporary solution)
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+
+        $response = curl_exec($curl);
+        if ($response === false) {
+            die('Error fetching data from Plex server: ' . curl_error($curl));
+        }
+        curl_close($curl);
+
+        $xml = simplexml_load_string($response);
+        if ($xml === false) {
+            die('Error parsing XML response.');
+        }
+
+        $items = [];
+
+        foreach ($xml->Directory as $video) {
+            $title = (string) $video['title'];
+            $subtitle = (string) $video['summary'];
+            $id = (string) $video['ratingKey'];
+            $thumb = "https://webviews.streamnet.live/api/proxy.php?url=" . urlencode("http://$plexServerUrl" . (string) $video['thumb'] . "?X-Plex-Token=$plexToken");
+            $art = "https://webviews.streamnet.live/api/proxy.php?url=" . urlencode("http://$plexServerUrl" . (string) $video['art'] . "?X-Plex-Token=$plexToken");
+            $url = "https://webviews.streamnet.live/api/proxy.php?url=" . urlencode("http://$plexServerUrl/web/index.html#!/server/$id/details?key=%2Flibrary%2Fmetadata%2F$id");
+            $tmdb = fetchTmdbSeriesId($id, $plexToken, $plexServerUrl);
+            $tmdb_id = $tmdb;
+            $fallbackLogoUrl = 'https://app.streamnet.live/pics/streamnet_tv.png';
+            $logo = fetchTmdbSeriesLogo($tmdb_id, $tmdbApi, $fallbackLogoUrl);
+
+
+            $items[] = array(
+                "plex_id" => $id,
+                "tmdb_id" => $tmdb_id,
+                "logo" => $logo,
+                "title" => $title,
+                "subtitle" => $subtitle,
+                "image" => $art,
+                "artWork" => $thumb,
+                "url" => $url,
+                "date" => (string) $video['originallyAvailableAt']
+
+            );
+        }
+
+        return $items;
+    }
+
+    function fetchAndFilterSeriesAnimation($url, $plexToken, $plexServerUrl, $tmdbApi)
+    {
+        $curl = curl_init($url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, [
+            "X-Plex-Token: $plexToken"
+        ]);
+
+        // Function to disable SSL verification (temporary solution)
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+
+        $response = curl_exec($curl);
+        if ($response === false) {
+            die('Error fetching data from Plex server: ' . curl_error($curl));
+        }
+        curl_close($curl);
+
+        $xml = simplexml_load_string($response);
+        if ($xml === false) {
+            die('Error parsing XML response.');
+        }
+
+        $items = [];
+
+        foreach ($xml->Directory as $video) {
+            $title = (string) $video['title'];
+            $subtitle = (string) $video['summary'];
+            $id = (string) $video['ratingKey'];
+            $thumb = "https://webviews.streamnet.live/api/proxy.php?url=" . urlencode("http://$plexServerUrl" . (string) $video['thumb'] . "?X-Plex-Token=$plexToken");
+            $art = "https://webviews.streamnet.live/api/proxy.php?url=" . urlencode("http://$plexServerUrl" . (string) $video['art'] . "?X-Plex-Token=$plexToken");
+            $url = "https://webviews.streamnet.live/api/proxy.php?url=" . urlencode("http://$plexServerUrl/web/index.html#!/server/$id/details?key=%2Flibrary%2Fmetadata%2F$id");
+            $tmdb = fetchTmdbSeriesId($id, $plexToken, $plexServerUrl);
+            $tmdb_id = $tmdb;
+            $fallbackLogoUrl = 'https://app.streamnet.live/pics/streamnet_tv.png';
+            $logo = fetchTmdbSeriesLogo($tmdb_id, $tmdbApi, $fallbackLogoUrl);
+
+
+            $items[] = array(
+                "plex_id" => $id,
+                "tmdb_id" => $tmdb_id,
+                "logo" => $logo,
+                "title" => $title,
+                "subtitle" => $subtitle,
+                "image" => $art,
+                "artWork" => $thumb,
+                "url" => $url,
+                "date" => (string) $video['originallyAvailableAt']
+
+            );
+        }
+
+        return $items;
+    }
+
+    // Function to search for a specific series Tmdb ID
+    function fetchTmdbSeriesId($id, $plexToken, $plexServerUrl)
+    {
+        // Construct the URL
+        $url = "http://$plexServerUrl/library/metadata/$id?checkFiles=1&X-Plex-Token=$plexToken";
+
+        // Initialize cURL
+        $curl = curl_init($url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, [
+            "X-Plex-Token: $plexToken"
+        ]);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+
+        // Execute cURL request
+        $response = curl_exec($curl);
+        if ($response === false) {
+            die('Error fetching data from Plex server: ' . curl_error($curl));
+        }
+        curl_close($curl);
+
+        // Load XML from response
+        $xml = simplexml_load_string($response);
+        if ($xml === false) {
+            die('Error parsing XML response.');
+        }
+
+        // Iterate through the XML to find the TMDB ID
+        foreach ($xml->Directory->Guid as $guid) {
+            $guidValue = (string) $guid['id'];
+            if (preg_match('/tmdb:\/\/(\d+)/', $guidValue, $matches)) {
+                return $matches[1]; // Return the TMDB ID
+            }
+        }
+
+        return null; // Return null if no TMDB ID is found
+    }
+
+    function fetchTmdbSeriesLogo($tmdb_id, $tmdbApi)
+    {
+        $url = "https://api.themoviedb.org/3/tv/$tmdb_id?api_key=$tmdbApi&append_to_response=images";
+        $fallbackLogoUrl = 'https://app.streamnet.live/pics/streamnet_tv.png';
+
+        // Initialize cURL session
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+
+        // Execute cURL request
+        $response = curl_exec($curl);
+        if ($response === false) {
+            $error_message = 'Error fetching data from TMDb: ' . curl_error($curl);
+            curl_close($curl);
+            throw new Exception($error_message);
+        }
+
+        // Close cURL session
+        curl_close($curl);
+
+        // Decode JSON response
+        $data = json_decode($response, true);
+
+        // Check if data is empty or the required keys are missing
+        if (empty($data) || !isset($data['images']) || !isset($data['images']['logos'])) {
+            return $fallbackLogoUrl;
+        }
+
+        // Find the German or English logo
+        $logos = $data['images']['logos'];
+        $selectedLogo = null;
+
+        foreach ($logos as $logo) {
+            if ($logo['iso_639_1'] === 'de') {
+                $selectedLogo = $logo;
+                break;
+            }
+        }
+
+        if (!$selectedLogo) {
+            foreach ($logos as $logo) {
+                if ($logo['iso_639_1'] === 'en') {
+                    $selectedLogo = $logo;
+                    break;
+                }
+            }
+        }
+
+        // Check if a logo was found
+        if ($selectedLogo) {
+            return "https://image.tmdb.org/t/p/original" . $selectedLogo['file_path'];
+        } else {
+            return $fallbackLogoUrl;
+        }
+    }
+
+    // URL for the last 10 recently released movies and series
+    $movies_url = "http://$plexServerUrl/library/sections/2/all?type=1&sort=originallyAvailableAt:desc&originallyAvailableAt>>=-1y&limit=10&X-Plex-Token=$plexToken"; // Adjust section ID for movies & Limit
+    $moviesMarvel_url = "http://$plexServerUrl/library/sections/1/all?type=1&sort=originallyAvailableAt:desc&originallyAvailableAt>>=-1y&limit=5&X-Plex-Token=$plexToken"; // Adjust section ID for series & Limit
+    $moviesDc_url = "http://$plexServerUrl/library/sections/3/all?type=1&sort=originallyAvailableAt:desc&originallyAvailableAt>>=-1y&limit=5&X-Plex-Token=$plexToken"; // Adjust section ID for series & Limit
+    $moviesBond_url = "http://$plexServerUrl/library/sections/4/all?type=1&sort=originallyAvailableAt:desc&originallyAvailableAt>>=-1y&limit=1&X-Plex-Token=$plexToken"; // Adjust section ID for series & Limit
+    $moviesAnimation_url = "http://$plexServerUrl/library/sections/12/all?type=1&sort=originallyAvailableAt:desc&originallyAvailableAt>>=-1y&limit=5&X-Plex-Token=$plexToken"; // Adjust section ID for series & Limit
+    $series_url = "http://$plexServerUrl/library/sections/10/all?type=2&sort=originallyAvailableAt:desc&originallyAvailableAt>>=-1y&limit=10&X-Plex-Token=$plexToken"; // Adjust section ID for series & Limit
+    $seriesAnimation_url = "http://$plexServerUrl/library/sections/11/all?type=2&sort=originallyAvailableAt:desc&originallyAvailableAt>>=-1y&limit=2&X-Plex-Token=$plexToken"; // Adjust section ID for series & Limit
+
+
+    $movies = fetchAndFilterMovies($movies_url, $plexToken, $plexServerUrl, $tmdbApi);
+    $moviesMarvel = fetchAndFilterMoviesMArvel($moviesMarvel_url, $plexToken, $plexServerUrl, $tmdbApi);
+    $moviesDc = fetchAndFilterMoviesDc($moviesDc_url, $plexToken, $plexServerUrl, $tmdbApi);
+    $moviesBond = fetchAndFilterMoviesBond($moviesBond_url, $plexToken, $plexServerUrl, $tmdbApi);
+    $moviesAnimation = fetchAndFilterMoviesAnimation($moviesAnimation_url, $plexToken, $plexServerUrl, $tmdbApi);
+    $series = fetchAndFilterSeries($series_url, $plexToken, $plexServerUrl, $tmdbApi);
+    $seriesAnimation = fetchAndFilterSeriesAnimation($seriesAnimation_url, $plexToken, $plexServerUrl, $tmdbApi);
+
+    // Combine movies and shows
+    $combined_data = array_merge($movies, $moviesMarvel, $moviesDc, $moviesBond, $moviesAnimation, $series, $seriesAnimation); // Combine both movies and series
+
+    // Randomize the combined data
+    shuffle($combined_data);
+
+    // Encode and store the combined data in the cache file without escaping slashes
+    $encoded_data = json_encode($combined_data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+    if (file_put_contents($cache_file, $encoded_data) === false) {
+        die('Failed to write to cache file.');
+    }
+}
+
+// Set the appropriate header and echo the combined data as JSON
+header("Content-Type: application/json");
+echo json_encode($combined_data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+
+// Debugging: Output some of the image URLs to check them
+/*
+foreach ($combined_data as $item) {
+    echo "<img src='{$item['image']}' alt='{$item['title']}'>";
+    echo "<br><img src='{$item['artWork']}' alt='{$item['title']}'>";
+}
+*/

@@ -1,0 +1,491 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* Include padding and border in element's total width/height */
+}
+
+body {
+  height: 100vh; /* Use viewport height for body */
+  margin: 0; /* Remove default body margin */
+  font-family: "Segoe UI", sans-serif; /* Set a default font */
+  overflow: hidden; /* Hide any overflow content to prevent scrollbars */
+  display: flex;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover; /* Default to cover */
+  background-color: #141414; /* Fallback background color */
+  justify-content: center; /* Center content horizontally */
+  align-items: center; /* Center content vertically */
+}
+.container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  position: fixed;
+  overflow: hidden;
+  justify-content: center;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover; /* Default to cover */
+  background-color: #141414; /* Fallback background color */
+}
+
+.col,
+.row {
+  flex: 1; /* Expand to fill available space */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Hide any overflow content to prevent scrollbars */
+}
+
+#prev img,
+#next img {
+  width: auto; /* Allow the width to adjust automatically */
+  height: 100%; /* Set the height to 100% */
+  max-height: none; /* Disable the max-height property */
+  transform: scale(0.6);
+  opacity: 0.5;
+}
+#prev:hover img,
+#next:hover img {
+  filter: invert(100%);
+  opacity: 0.75;
+}
+#prev:hover,
+#next:hover {
+  background-color: rgba(0, 0, 0, 0.75);
+}
+
+#prev img,
+#next img {
+  height: 100%;
+  width: 100%;
+  transform: scale(0.6);
+  opacity: 0.5;
+}
+#prev:hover img,
+#next:hover img {
+  filter: invert(100%);
+  opacity: 0.75;
+}
+
+#prev {
+  left: 0;
+}
+#next {
+  right: 0;
+}
+
+#dots {
+  width: 100%;
+  height: 50px;
+  position: absolute;
+  z-index: 10;
+  bottom: 0;
+  display: flex;
+  background-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0),
+    rgba(0, 0, 0, 0.7)
+  );
+  padding-bottom: 15px;
+  justify-content: center;
+  align-items: flex-end;
+  visibility: hidden;
+}
+
+.dot-container {
+  height: 50px;
+  margin: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: flex-end;
+  transition: all 0.2s;
+}
+.dot-container:hover .dot {
+  height: 50px;
+  opacity: 1;
+}
+
+.dot {
+  height: 0px;
+  width: 0px;
+  border: solid white 2.5px;
+  background-color: rgba(226, 245, 236, 0.7);
+  background-size: cover;
+  background-position: center;
+  opacity: 0.5;
+  transition: all 0.05s, opacity 0.5s;
+}
+.dot.active {
+  opacity: 1;
+}
+
+.hidden {
+  width: 0%;
+  height: 0%;
+}
+
+.visible {
+  width: 100%;
+  height: 100%;
+}
+
+.pushUpDown:nth-child(odd) {
+  transform: translateY(-100%);
+  animation: pushDown 1s forwards;
+  animation-fill-mode: forwards;
+}
+.pushUpDown:nth-child(even) {
+  transform: translateY(100%);
+  animation: pushUp 1s forwards;
+  animation-fill-mode: forwards;
+}
+.pushUpDown div.content {
+  width: 100%;
+  height: 100%;
+}
+
+@keyframes pushDown {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0%);
+  }
+}
+@keyframes pushUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0%);
+  }
+}
+
+.pullUpDown:nth-child(odd) {
+  transform: translateY(-100%);
+  animation: pullDown 1s forwards;
+  animation-fill-mode: forwards;
+}
+.pullUpDown:nth-child(even) {
+  transform: translateY(100%);
+  animation: pullUp 1s forwards;
+  animation-fill-mode: forwards;
+}
+.pullUpDown div.content {
+  width: 100%;
+  height: 100%;
+}
+
+.bigger {
+  animation: bigger 1s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes bigger {
+  from {
+    transform: scale(0.75);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.smaller {
+  animation: smaller 1s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes smaller {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(0.75);
+  }
+}
+
+.pullDown {
+  animation: pullDown 1s forwards;
+  animation-fill-mode: forwards;
+}
+
+@keyframes pullDown {
+  from {
+    transform: translateY(0%);
+  }
+  to {
+    transform: translateY(100%);
+  }
+}
+
+.pullUp {
+  animation: pullUp 1s forwards;
+  animation-fill-mode: forwards;
+}
+
+@keyframes pullUp {
+  from {
+    transform: translateY(0%);
+  }
+  to {
+    transform: translateY(-100%);
+  }
+}
+
+.pullLeft {
+  animation: pullLeft 1s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes pullLeft {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+.pullRight {
+  animation: pullRight 1s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes pullRight {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+.boxShrink {
+  animation: boxShrink 0.5s;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+@keyframes boxShrink {
+  from {
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+  }
+  to {
+    width: 0%;
+    height: 0%;
+    opacity: 0.5;
+  }
+}
+
+.boxEmerge {
+  animation: boxEmerge 1s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes boxEmerge {
+  from {
+    width: 0%;
+    height: 0%;
+  }
+  to {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.slideCol {
+  width: 0%;
+  height: 100%;
+  animation: slideCol 1s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes slideCol {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+.pushUp {
+  animation: pushUp 1s;
+  animation-fill-mode: forwards;
+}
+
+.pushDown {
+  animation: pushDown 1s;
+  animation-fill-mode: forwards;
+}
+
+.fade {
+  animation: fade 0.5s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.pushLeft {
+  animation: pushLeft 1s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes pushLeft {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0%);
+  }
+}
+.pushRight {
+  animation: pushRight 1s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes pushRight {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0%);
+  }
+}
+
+.slide-header {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  user-select: none;
+  opacity: 0; /* Initially hidden */
+  cursor: pointer;
+  top: 30%;
+  left: 25%; /* left-right position (15%=middle) */
+  width: 70%;
+  height: 40%;
+  box-sizing: border-box;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 20px;
+  border-radius: 10px;
+  display: flex;
+  z-index: 20;
+  transition: all 0.5s;
+  color: white;
+  font-family: "Segoe UI", sans-serif;
+  font-size: 1.5em;
+}
+.slide-header.in {
+  animation: slideHeaderIn 1s 1s;
+  animation-fill-mode: forwards;
+}
+.slide-header.out {
+  animation: slideHeaderOut 0.2s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes slideHeaderIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+}
+@keyframes slideHeaderOut {
+  from {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(20%);
+  }
+}
+
+.header-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  /* additional styles for header text */
+}
+
+.logo {
+  height: auto;
+  max-height: 7vh;
+  max-width: 60%;
+  margin-bottom: 10px; /* Adjust space between logo and title */
+}
+
+.title-container {
+  display: flex;
+  align-items: center;
+  /* Add additional styles as needed */
+}
+
+.title-year {
+  font-weight: bold;
+  text-shadow: 0px 0px 5px #000;
+  font-size: clamp(0.2em, 1.5vw, 4em); /* Dynamische Schriftgröße */
+  text-overflow: ellipsis;
+  margin-bottom: 10px;
+  /* Add additional styles as needed */
+}
+
+.title {
+  font-weight: bold;
+  text-shadow: 0px 0px 5px #000;
+  font-size: 3em;
+  text-overflow: ellipsis;
+  margin-bottom: 10px;
+  /* Add additional styles as needed */
+}
+
+.year {
+  font-style: italic;
+  text-shadow: 0px 0px 5px #000;
+  margin-left: 5px; /* Slight spacing between title and year */
+  font-size: 3em;
+  margin-bottom: 10px;
+  /* Add additional styles as needed */
+}
+
+.subtitle {
+  font-weight: 400;
+  font-size: clamp(0.2em, 1.2vw, 3em); /* Dynamische Schriftgröße */
+  color: #eee;
+  text-shadow: 0px 0px 5px #000;
+  margin-left: 15px;
+  margin-right: 15px;
+  /*width: 80%;*/
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  display: -webkit-box;
+  overflow: hidden;
+}
+
+.artwork {
+  height: 100%;
+  border-radius: 10px;
+  align-self: flex-end;
+}
+
+.poster {
+  height: 100%;
+  border-radius: 10px;
+  align-self: flex-end;
+}
