@@ -6,14 +6,14 @@ $db = new SQLite3('../databases/marquee.db');
 // Query to retrieve marquee settings
 $query = "SELECT * FROM marquee WHERE id = 1 LIMIT 1";
 $result = $db->query($query);
-$marqueeData = $result->fetchArray(SQLITE3_ASSOC);
+$res = $result->fetchArray(SQLITE3_ASSOC);
 
 // Close the database connection
 $db->close();
 
 // Set default values if no data found
-if (!$marqueeData) {
-    $marqueeData = [
+if (!$res) {
+    $res = [
         'header_t' => '',
         'header_t_c' => '#ffffff',
         'header_b_c' => '#000000',
@@ -23,7 +23,6 @@ if (!$marqueeData) {
     ];
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -32,101 +31,110 @@ if (!$marqueeData) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Scrolling Marquee</title>
     <style>
-        body {
-            margin: 0;
+        * {
             padding: 0;
-            font-family: Arial, sans-serif;
-            background-color: #000;
+            margin: 0;
+            box-sizing: border-box;
         }
 
-        .marquee-container {
-            width: 100%;
-            position: relative;
+        body {
+            min-height: 100vh;
+            font-family: "arial";
         }
 
-        .marquee-header {
-            text-align: center;
-            padding: 10px;
+        .container {
+            display: flex;
+        }
+
+        .container p .container marquee {
+            padding: 0;
+        }
+
+        .label {
+            background: <?= htmlspecialchars($res['header_b_c']) ?>;
+            color: <?= htmlspecialchars($res['header_t_c']) ?>;
             font-weight: bold;
-            font-size: 1.2em;
-            background-color: <?= htmlspecialchars($marqueeData['header_b_c']) ?>;
-            color: <?= htmlspecialchars($marqueeData['header_t_c']) ?>;
+            padding: 0.5rem;
         }
 
-        .marquee-wrapper {
-            background-color: <?= htmlspecialchars($marqueeData['marquee_b_c']) ?>;
-            color: <?= htmlspecialchars($marqueeData['marquee_t_c']) ?>;
-            padding: 15px 0;
-            overflow: hidden;
-            white-space: nowrap;
-            position: relative;
+        marquee {
+            flex: 1;
+            padding: 0.5rem;
+            background: <?= htmlspecialchars($res['marquee_b_c']) ?>;
+            color: <?= htmlspecialchars($res['marquee_t_c']) ?>;
         }
 
-        .marquee-text {
-            display: inline-block;
-            padding-left: 100%;
-            animation: marquee 30s linear infinite;
-            font-size: 1.1em;
+        .text {
+            padding: 0.5rem;
+            animation: 10s marquee linear infinite;
+            background: black;
         }
 
         @keyframes marquee {
             0% {
-                transform: translate3d(0, 0, 0);
+                transform: translateX(100%);
             }
 
             100% {
-                transform: translate3d(-100%, 0, 0);
+                transform: translateX(-100%);
             }
         }
 
-        /* Pause animation on hover */
-        .marquee-wrapper:hover .marquee-text {
-            animation-play-state: paused;
+        /* Responsive Design - keep horizontal layout */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: row;
+                /* Keep horizontal layout */
+            }
+
+            .label {
+                font-size: 0.9rem;
+                /* Smaller font on mobile */
+                padding: 0.4rem;
+                min-width: 80px;
+                /* Ensure minimum width */
+            }
+
+            marquee {
+                font-size: 0.9rem;
+                /* Smaller font on mobile */
+                padding: 0.4rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .label {
+                font-size: 0.8rem;
+                padding: 0.3rem;
+                min-width: 60px;
+            }
+
+            marquee {
+                font-size: 0.8rem;
+                padding: 0.3rem;
+            }
         }
 
         /* Hide if no content */
-        .marquee-container.empty {
+        .container.empty {
             display: none;
         }
     </style>
 </head>
 
 <body>
-    <?php if (!empty($marqueeData['header_t']) || !empty($marqueeData['marquee_t'])): ?>
-        <div class="marquee-container">
-            <?php if (!empty($marqueeData['header_t'])): ?>
-                <div class="marquee-header">
-                    <?= htmlspecialchars($marqueeData['header_t']) ?>
-                </div>
-            <?php endif; ?>
-
-            <?php if (!empty($marqueeData['marquee_t'])): ?>
-                <div class="marquee-wrapper">
-                    <div class="marquee-text">
-                        <?= htmlspecialchars($marqueeData['marquee_t']) ?>
-                    </div>
-                </div>
-            <?php endif; ?>
+    <?php if (!empty($res['header_t']) || !empty($res['marquee_t'])): ?>
+        <div class="container">
+            <span class="label"><?= htmlspecialchars($res['header_t']) ?></span>
+            <marquee behavior="scroll" direction="left" scrollamount="3">
+                <?= htmlspecialchars($res['marquee_t']) ?>
+            </marquee>
         </div>
     <?php else: ?>
-        <div class="marquee-container empty">
-            <!-- No content to display -->
+        <div class="container empty">
+            <!-- Empty state - nothing to display -->
         </div>
     <?php endif; ?>
-
-    <script>
-        // Auto refresh every 30 seconds to check for updates
-        setTimeout(function() {
-            window.location.reload();
-        }, 30000);
-
-        // Optional: Add keyboard controls
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'r' || e.key === 'R') {
-                window.location.reload();
-            }
-        });
-    </script>
 </body>
 
 </html>
